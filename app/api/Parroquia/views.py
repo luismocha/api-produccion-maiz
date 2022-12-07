@@ -26,11 +26,11 @@ class ParroquiaAV(APIView):
 class ParroquiaDetalleAV(APIView):
     def get(self, request, pk):
         try:
-            canton = Canton.objects.get(pk=pk)
-            serializer = ParroquiaSerializer(canton)
+            parroquia = Parroquia.objects.get(pk=pk)
+            serializer = ParroquiaSerializer(parroquia)
             return Response(serializer.data,status=status.HTTP_200_OK)
         except:
-            return Response({'error':'Canton no encontrado'},status=status.HTTP_404_NOT_FOUND)
+            return Response({'error':'Parroquia no encontrado'},status=status.HTTP_404_NOT_FOUND)
     #actulizar
     def put(self, request, pk):
         try:
