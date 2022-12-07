@@ -12,6 +12,8 @@ class ParroquiaAV(APIView):
         serializer = ParroquiaSerializer(parroquias, many=True)
         return Response(serializer.data)
     def post(self, request):
+        print("RESQUES")
+        print(request.data)
         try:
             serializer=ParroquiaSerializer(data=request.data)
             if serializer.is_valid():
@@ -30,7 +32,7 @@ class ParroquiaDetalleAV(APIView):
             serializer = ParroquiaSerializer(parroquia)
             return Response(serializer.data,status=status.HTTP_200_OK)
         except:
-            return Response({'error':'Parroquia no encontrado'},status=status.HTTP_404_NOT_FOUND)
+            return Response({'error':'Parroquia no encontrada'},status=status.HTTP_404_NOT_FOUND)
     #actulizar
     def put(self, request, pk):
         try:
