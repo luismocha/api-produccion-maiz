@@ -10,6 +10,7 @@ class CantonAV(APIView):
     def get(self, request):
         cantons = Canton.objects.all()
         serializer = CantonSerializer(cantons, many=True)
+        print(serializer.data)
         return Response(serializer.data)
     def post(self, request):
         try:

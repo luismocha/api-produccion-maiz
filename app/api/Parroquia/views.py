@@ -36,10 +36,10 @@ class ParroquiaDetalleAV(APIView):
     #actulizar
     def put(self, request, pk):
         try:
-            canton = Canton.objects.get(pk=pk)
+            parroquia = Parroquia.objects.get(pk=pk)
         except Canton.DoesNotExist:
-            return Response({'error':'Canton no encontrado'},status=status.HTTP_404_NOT_FOUND)
-        serializer=ParroquiaSerializer(canton,data=request.data)
+            return Response({'error':'Parroquia no encontrado'},status=status.HTTP_404_NOT_FOUND)
+        serializer=ParroquiaSerializer(parroquia,data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_200_OK)
@@ -47,10 +47,10 @@ class ParroquiaDetalleAV(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def delete(self, request, pk):
         try:
-            canton = Canton.objects.get(pk=pk)
+            parroquia = Parroquia.objects.get(pk=pk)
         except:
-            return Response({'error':'Canton no encontrado'},status=status.HTTP_404_NOT_FOUND)
-        canton.delete()
+            return Response({'error':'Parroquia no encontrado'},status=status.HTTP_404_NOT_FOUND)
+        parroquia.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 """ @api_view()
