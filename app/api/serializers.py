@@ -1,15 +1,15 @@
 from rest_framework import serializers
 from app.models import Canton
 #libreria de serealizaon de datos para mapear en la api
-class CantonSerializer(serializers.Serializer):
+class CantonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Canton
         fields = '__all__'
-    id= serializers.IntegerField(read_only=True)
-    nombre= serializers.CharField()
-    latitud= serializers.CharField()
-    longitud= serializers.CharField()
-    activo= serializers.BooleanField()
+    """     id= serializers.IntegerField(read_only=True)
+        nombre= serializers.CharField(required=True)
+        latitud= serializers.CharField(required=True)
+        longitud= serializers.CharField(required=True)
+        activo= serializers.BooleanField() """
 
     def create(self,validated_data):
         return Canton.objects.create(**validated_data)
