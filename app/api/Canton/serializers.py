@@ -20,12 +20,12 @@ class CantonSerializer(serializers.ModelSerializer):
         instancia.activo=validated_data.get('activo',instancia.activo)
         instancia.save()
         return instancia
-class CantonFkSerializer(serializers.Serializer):
+""" class CantonFkSerializer(serializers.Serializer):
     class Meta:
         model = Canton
-        fields = 'fk_canton'
+        fields = '__all__'
     id= serializers.IntegerField(read_only=True)
     nombre= serializers.CharField()
     latitud= serializers.CharField()
     longitud= serializers.CharField()
-    activo= serializers.BooleanField()
+    activo= serializers.BooleanField() """

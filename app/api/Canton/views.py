@@ -1,5 +1,5 @@
 from urllib import response
-from app.api.serializers import CantonSerializer
+from app.api.Canton.serializers import CantonSerializer
 from app.models import Canton
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
