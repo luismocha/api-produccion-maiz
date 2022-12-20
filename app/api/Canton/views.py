@@ -5,8 +5,12 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
+#from rest_framework.permissions import IsAuthenticated
+from app.api.permissions import AdminOrReadOnly
 
 class CantonAV(APIView):
+    ## SOLO PUEDE VISUALIZAR CUALQUIER PERSONA
+    permission_classes =[AdminOrReadOnly]
     def get(self, request):
         cantons = Canton.objects.all()
         serializer = CantonSerializer(cantons, many=True)
@@ -25,6 +29,8 @@ class CantonAV(APIView):
 
 #buscar por id
 class CantonDetalleAV(APIView):
+    ## SOLO PUEDEN MANIPULAR LA INFORMACION LOS USUARIOS ADMIN
+    permission_classes =[AdminOrReadOnly]
     def get(self, request, pk):
         try:
             canton = Canton.objects.get(pk=pk)
