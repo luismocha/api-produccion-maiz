@@ -19,5 +19,6 @@ from  app import urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(urls)),
-    path('api-auth/', include('rest_framework.urls')),
+    path('auth/', include('user_app.api.urls')),
+    #path('api-auth/', include('rest_framework.urls')),
 ]

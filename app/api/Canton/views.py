@@ -5,12 +5,12 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
-#from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from app.api.permissions import AdminOrReadOnly
 
 class CantonAV(APIView):
     ## SOLO PUEDE VISUALIZAR CUALQUIER PERSONA
-    permission_classes =[AdminOrReadOnly]
+    permission_classes =[AdminOrReadOnly,IsAuthenticated]
     def get(self, request):
         cantons = Canton.objects.all()
         serializer = CantonSerializer(cantons, many=True)
