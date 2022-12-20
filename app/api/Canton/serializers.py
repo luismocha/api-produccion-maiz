@@ -1,7 +1,11 @@
 from rest_framework import serializers
 from app.models import Canton
+#from app.api.Parroquia.serializers import ParroquiaSerializer
+
 #libreria de serealizaon de datos para mapear en la api
 class CantonSerializer(serializers.ModelSerializer):
+    #parroquiaslist=ParroquiaSerializer(many=True,read_only=True)
+
     class Meta:
         model = Canton
         fields = '__all__'

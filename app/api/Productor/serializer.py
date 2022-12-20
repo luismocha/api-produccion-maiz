@@ -1,9 +1,13 @@
 from rest_framework import serializers
-from app.api.Canton.serializers import CantonSerializer
-from app.models import  Parroquia, Productor
+#from app.api.Parroquia.serializers import ParroquiaSerializer
+#from app.api.Canton.serializers import CantonSerializer
+from app.models import   Productor
 #libreria de serealizaon de datos para mapear en la api
 
 class ProductorSerializer(serializers.ModelSerializer):
+    ##parroquiaslist=ParroquiaSerializer(many=True,read_only=True)
+    canton_nombre=serializers.CharField(source='canton.nombre',read_only=True)
+    #parroquia_nombre=serializers.CharField(source='Parroquia.nombre',read_only=True)
     class Meta:
         model = Productor
         fields = '__all__'

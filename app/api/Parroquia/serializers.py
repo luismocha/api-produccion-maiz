@@ -1,22 +1,23 @@
 from rest_framework import serializers
 from app.api.Canton.serializers import CantonSerializer
+#from app.api.Canton.serializers import CantonSerializer
+#from app.api.Canton.serializers import CantonSerializer
+#from app.api.Canton.serializers import CantonSerializer
 from app.models import Canton, Parroquia
 #libreria de serealizaon de datos para mapear en la api
 
 class ParroquiaSerializer(serializers.ModelSerializer):
+    fk_canton=CantonSerializer(read_only=True)
+    fk_canton_id=serializers.SlugRelatedField(queryset=Canton.objects.all(),slug_field='id', write_only=True)
 
-    #fk_canton = serializers.HyperlinkedIdentityField(many=True,read_only=True,view_name='listar-cantones')
-    #print('xxxxxxxxxxxx')
-    ##print(fk_canton)
-    #fk_canton = serializers.StringRelatedField(many=True)
-    #fk_canton = serializers.PrimaryKeyRelatedField(many=True,read_only=True)
-    #print(fk_canton)
-    #print(canton)
-    #fk_canton = serializers.SlugRelatedField(queryset=canton.objects.all(), slug_field='canton', write_only=True)
-    #fk_canton= serializers.PrimaryKeyRelatedField( many=False,queryset=Canton.objects.all(), write_only=True)
     class Meta:
         model = Parroquia
-        fields = '__all__'
+        fields = ['nombre', 'fk_canton', 'fk_canton_id', 'activo']
+        #fields = ['canton_nombre']
+        #fields = ('id', 'nombre', 'canton_nombre')
+        #read_only_fields = ('canton_nombre')
+        #fields = ('canton_nombre')
+        #exclude = ('canton_nombre')
     #id= serializers.IntegerField(read_only=True)
     #nombre= serializers.CharField()
     #fk_canton= serializers.PrimaryKeyRelatedField( many=False,queryset=Canton.objects.all(), write_only=True)
@@ -26,7 +27,12 @@ class ParroquiaSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         print("xxxxxxxxxxx")
         print(validated_data)
-        return Parroquia.objects.create(**validated_data)
+        data = {
+                'nombre': validated_data.get('nombre', None),
+                'fk_canton': validated_data.get('fk_canton_id', None),
+                'activo': validated_data.get('activo', None)
+                }
+        return Parroquia.objects.create(**data)
 
     def update(self,instancia,validated_data):
         instancia.nombre=validated_data.get('nombre',instancia.nombre)

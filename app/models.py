@@ -15,7 +15,7 @@ class Canton(models.Model):
 
 class Parroquia(models.Model):
     nombre=models.CharField(max_length=100,unique=True)
-    fk_canton = models.ForeignKey(Canton,on_delete=models.CASCADE,related_name='cantoneslist')
+    fk_canton = models.ForeignKey(Canton,on_delete=models.CASCADE,related_name='parroquiaslist')
     activo=models.BooleanField(default=True)
     """     created=models.DateTimeField(auto_now_add=True)
         updated = models.DateTimeField(auto_now=True)  """
@@ -27,8 +27,8 @@ class Productor(models.Model):
     cedula=models.CharField(max_length=11,unique=True)
     celular=models.CharField(max_length=15)
     activo=models.BooleanField(default=True)
-    fk_canton=models.ForeignKey(Canton,on_delete=models.CASCADE,related_name='canton_productor')
-    fk_parroquia=models.ForeignKey(Parroquia,on_delete=models.CASCADE,related_name='parroquia_productor')
+    fk_canton=models.ForeignKey(Canton,on_delete=models.CASCADE,related_name='cantonlist')
+    fk_parroquia=models.ForeignKey(Parroquia,on_delete=models.CASCADE,related_name='parroquialist')
     """     created=models.DateTimeField(auto_now_add=True)
         updated = models.DateTimeField(auto_now=True)  """
     def __str__(self) :
