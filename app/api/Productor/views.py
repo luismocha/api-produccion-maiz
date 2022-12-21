@@ -4,8 +4,10 @@ from app.models import Canton, Productor
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
+from app.api.permissions import AdminOrReadOnly
 
 class ProductorAV(APIView):
+    permission_classes =[AdminOrReadOnly]
     def get(self, request):
         productor = Productor.objects.all()
         serializer = ProductorSerializer(productor, many=True)
@@ -25,6 +27,7 @@ class ProductorAV(APIView):
 
 #buscar por id
 class ProductorDetalleAV(APIView):
+    permission_classes =[AdminOrReadOnly]
     def get(self, request, pk):
         try:
             productor = Productor.objects.get(pk=pk)
