@@ -11,11 +11,23 @@ class AdminOrReadOnly(permissions.IsAdminUser):
         staff_permissio=bool(request.user and request.user.is_staff)
         print(staff_permissio)
         return staff_permissio
-class CrearPostUserOrReadOnly():
+class AdminAuthPutOrReadOnly(permissions.IsAdminUser):
+     def has_permission(self, request, view):
+        print(self)
+        print('-----REQUEST')
+        print(request)
+        print(view)
+        if request.method =='GET' or request.method =='PUT':
+            staff_permissio=bool(request.user and request.user.is_staff)
+            return staff_permissio
+"""         if request.method =='PUT':
+            staff_permissio=bool(request.user and request.user.is_staff)
+            return staff_permissio """
+class AuthPermisos(permissions.BasePermission):
     def has_object_permission(self,request,view,object):
         #safe== metodos get
         if request.method in permissions.SAFE_METHODS:
             return True
         else:
             ## el uusario que ha creado cualquier cosa en la aplicacion
-            return object.post_creacion_user==request.user
+            return object.user==request.user

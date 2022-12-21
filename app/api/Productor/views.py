@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from app.api.permissions import AdminOrReadOnly
 from rest_framework import serializers
 from app.api.validaciones.validar_cedula import vcedula
+
 class ProductorAV(APIView):
     permission_classes =[AdminOrReadOnly]
     def get(self, request):
@@ -71,15 +72,7 @@ class ProductorDetalleAV(APIView):
         try:
             productor = Productor.objects.get(pk=pk)
         except  Exception as e:
-            return Response({'data':[],'success':False,'message':"ERROR"+str(e)},status=status.HTTP_404_NOT_FOUND)
+            return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
         productor.delete()
         return Response({'data':[],'success':True,'message':'Registro eliminado'},status=status.HTTP_204_NO_CONTENT)
-
-""" @api_view()
-def listarCantones(request):
-    cantones=Canton.objects.all()
-    serializer=CantonSerializer(cantones,many=True)
-    return response(serializer.data) """
-""" class ListarCantones:
-    pass """
 

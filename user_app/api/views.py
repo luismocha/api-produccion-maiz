@@ -1,32 +1,66 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
-from user_app.api.serializers import UserSerializer, UserSerializer
+#from user_app.api.serializers import UserSerializer, UserSerializer
 from rest_framework import serializers
+from app.api.permissions import AdminAuthPutOrReadOnly, AdminOrReadOnly, AuthPermisos
 from user_app import models
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+
+from user_app.api.serializers import UserSerializer
+
+@api_view(['GET','PUT'])
+@permission_classes([AdminAuthPutOrReadOnly])
+def usuario_id_view(request,pk):
+    try:
+        User = get_user_model()
+        user = User.objects.get(pk=pk)
+    except User.DoesNotExist:
+        return Response({'data':[],'success':True,'message':'Usuario no encontrado'},status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        if request.method == 'GET':
+            serializer =UserSerializer(user)
+            return Response({'data':serializer.data,'success':True,'message':'Usuario encontrado'},status=status.HTTP_200_OK)
+        
+        if request.method=='PUT':
+            serializer =UserSerializer(user)
+            return Response({'data':serializer.data,'success':True,'message':'XXUsuario encontrado'},status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['PUT'])
+#@permission_classes([AdminAuthPutOrReadOnly])
+def usuarios_update_id_view(request,pk):
+    try:
+        import pdb; pdb.set_trace()
+        User = get_user_model()
+        user = User.objects.get(pk=pk)
+        serializer =UserSerializer(user)
+        return Response({'data':serializer.data,'success':True,'message':'Usuario encontrado'},status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET'])
+@permission_classes([AdminAuthPutOrReadOnly])
 def listar_usuarios_view(request):
     print("**  LISTAR TODO LOS USUARIOS *****")
     print(request)
     try:
         print(request.user)
         if request.method == 'GET':
-            ##
             User = get_user_model()
             users = User.objects.all()
-            serializer =UserSerializer(users)
-            print("****************TODOS LOS USUARIOS ")
-            print(users)
-            print("****************TODOS LOS USUARIOS SERIALIZADOS")
-            print(serializer)
+            serializer =UserSerializer(users,many=True)
+            print(serializer.data)
             return Response({'data':serializer.data,'success':True,'message':'Listado de todos los usuarios'},status=status.HTTP_200_OK)
     except Exception as e:
-        return Response({'data':[],'success':False,'message':str(e)},status=status.HTTP_400_BAD_REQUEST)
+        return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+#@permission_classes([AdminOrReadOnly])
 def logout_view(request):
     print("**  CERRAR SESION USER *****")
     print(request)
@@ -34,16 +68,26 @@ def logout_view(request):
         print(request.user)
         if request.method == 'POST':
             request.user.auth_token.delete()
-            return Response(status=status.HTTP_200_OK)
+            return Response({'data':[],'success':True,'message':'Sesión cerrada exitosamente'},status=status.HTTP_200_OK)
     except Exception as e:
-        return Response({'error':'ERROR','message':str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
+@permission_classes([AdminOrReadOnly])
 def registration_view(request):
     try:
         print(" ** REGISTRAR USUARIO ***+")
         print(request.data)
         if request.method == 'POST':
+            ##valir que el usuarioname sera unico
+            User = get_user_model()
+            users_name = User.objects.filter(username=request.data['username']).first()
+            if  users_name:
+                return Response({'data':[],'success':False,'message':'Ya existe un usurio con el nombre de '+request.data['username']},status=status.HTTP_404_NOT_FOUND)
+            users_email = User.objects.filter(email=request.data['email']).first()
+            if  users_email:
+                return Response({'data':[],'success':False,'message':'Ya existe un usurio con el correo de '+request.data['email']},status=status.HTTP_404_NOT_FOUND)
+            ## TODO OKKKK
             serializer=UserSerializer(data=request.data)
             data={}
             if serializer.is_valid():
@@ -55,10 +99,10 @@ def registration_view(request):
                 data['email']=account.email
                 token=Token.objects.get(user=account).key
                 data['token']=token
-                return Response(data,status=status.HTTP_200_OK)
+                return Response({'data':data,'success':True,'message':'Usuario creado exitosamente'},status=status.HTTP_201_CREATED)
             else:
                 data=serializer.errors
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'data':data,'success':False,'message':"No se puede crear el usuario "}, status=status.HTTP_400_BAD_REQUEST)
             #return Response(data)
     except Exception as e:
         return Response({'error':'ERROR','message':str(e)}, status=status.HTTP_400_BAD_REQUEST)
