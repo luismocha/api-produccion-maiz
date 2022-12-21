@@ -10,7 +10,7 @@ from app.api.permissions import AdminOrReadOnly
 
 class CantonAV(APIView):
     ## SOLO PUEDE VISUALIZAR CUALQUIER PERSONA
-    permission_classes =[AdminOrReadOnly,IsAuthenticated]
+    permission_classes =[AdminOrReadOnly]
     def get(self, request):
         cantons = Canton.objects.all()
         serializer = CantonSerializer(cantons, many=True)

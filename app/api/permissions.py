@@ -3,6 +3,7 @@ from rest_framework import permissions
 class AdminOrReadOnly(permissions.IsAdminUser):
     def has_permission(self, request, view):
         print(self)
+        print('-----REQUEST')
         print(request)
         print(view)
         if request.method =='GET':

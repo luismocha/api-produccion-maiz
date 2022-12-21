@@ -8,10 +8,10 @@ from rest_framework import status
 
 @api_view(['POST'])
 def logout_view(request):
-    print("**  USER *****")
+    print("**  CERRAR SESION USER *****")
     print(request)
-    print(request.user)
     try:
+        print(request.user)
         if request.method == 'POST':
             request.user.auth_token.delete()
             return Response(status=status.HTTP_200_OK)
@@ -21,7 +21,7 @@ def logout_view(request):
 @api_view(['POST'])
 def registration_view(request):
     try:
-        print("xxxxxxxxxx")
+        print(" ** REGISTRAR USUARIO ***+")
         print(request.data)
         if request.method == 'POST':
             serializer=RegistrationSerializer(data=request.data)
