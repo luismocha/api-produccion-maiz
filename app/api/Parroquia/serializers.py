@@ -25,8 +25,6 @@ class ParroquiaSerializer(serializers.ModelSerializer):
     #activo= serializers.BooleanField()
     
     def create(self, validated_data):
-        print("xxxxxxxxxxx")
-        print(validated_data)
         data = {
                 'nombre': validated_data.get('nombre', None),
                 'fk_canton': validated_data.get('fk_canton_id', None),

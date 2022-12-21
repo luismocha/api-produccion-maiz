@@ -14,7 +14,7 @@ class ParroquiaAV(APIView):
             serializer = ParroquiaSerializer(parroquias, many=True)
             return Response({'data':serializer.data,'success':True,'message':'Listado de todas las parroquias'},status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({'data':[],'success':False,'message':str(e)},status=status.HTTP_404_NOT_FOUND)
+            return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
     def post(self, request):
         try:
             serializer=ParroquiaSerializer(data=request.data)
@@ -35,8 +35,8 @@ class ParroquiaDetalleAV(APIView):
             parroquia = Parroquia.objects.get(pk=pk)
             serializer = ParroquiaSerializer(parroquia)
             return Response({'data':serializer.data,'success':True,'message':'Parroquia encontrada'},status=status.HTTP_200_OK)
-        except:
-            return Response({'data':[],'success':False,'message':'Parroquia no encontrada'},status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'data':[],'success':False,'message':'ERROR '+str(e)},status=status.HTTP_404_NOT_FOUND)
     #actulizar
     def put(self, request, pk):
         try:
@@ -53,12 +53,12 @@ class ParroquiaDetalleAV(APIView):
             else:
                 return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar la parroquia'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response({'data':serializer.errors,'success':False,'message':str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'data':serializer.errors,'success':False,'message':"ERROR "+str(e)}, status=status.HTTP_400_BAD_REQUEST)
     def delete(self, request, pk):
         try:
             parroquia = Parroquia.objects.get(pk=pk)
         except Exception as e:
-            return Response({'data':[],'success':False,'message':str(e)},status=status.HTTP_404_NOT_FOUND)
+            return Response({'data':[],'success':False,'message':"ERROR"+str(e)},status=status.HTTP_404_NOT_FOUND)
         parroquia.delete()
         return Response({'data':[],'success':True,'message':'Registro eliminado'},status=status.HTTP_204_NO_CONTENT)
 

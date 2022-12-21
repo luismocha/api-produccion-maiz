@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 
 class RegistrationSerializer(serializers.ModelSerializer):
+
     #mapear la data
     password2=serializers.CharField(style={'input_type': 'password'},write_only=True)
     
@@ -32,5 +33,14 @@ class RegistrationSerializer(serializers.ModelSerializer):
             account.set_password(password)
             account.save()
             return account
-        except IOError:
-            raise serializers.ValidationError({'error':'ERROR','message':IOError})
+        except Exception as e:
+            raise serializers.ValidationError({'error':'ERROR','message':str(e)})
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'id', 'password')
+        read_only_fields = ('id',)
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
