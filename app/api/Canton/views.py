@@ -21,7 +21,12 @@ class CantonAV(APIView):
             return Response({'data':[],'success':False,'message':str(e)},status=status.HTTP_404_NOT_FOUND)
     
     def post(self, request):
+        
         try:
+            canton=Canton.objects.filter(nombre=request.data['nombre']).first()
+            if  canton:
+                return Response({'data':[],'success':False,'message':'Ya existe un cantón con el nombre de '+request.data['nombre']},status=status.HTTP_404_NOT_FOUND)
+            ## TODO OK
             serializer=CantonSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()

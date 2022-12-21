@@ -17,6 +17,10 @@ class ParroquiaAV(APIView):
             return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
     def post(self, request):
         try:
+            parroquia=Parroquia.objects.filter(nombre=request.data['nombre']).first()
+            if  parroquia:
+                return Response({'data':[],'success':False,'message':'Ya existe una parroquia con el nombre de '+request.data['nombre']},status=status.HTTP_404_NOT_FOUND)
+            ###### TODO OK
             serializer=ParroquiaSerializer(data=request.data)
             
             if serializer.is_valid():
