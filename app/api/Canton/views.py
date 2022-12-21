@@ -11,21 +11,25 @@ from app.api.permissions import AdminOrReadOnly
 class CantonAV(APIView):
     ## SOLO PUEDE VISUALIZAR CUALQUIER PERSONA
     permission_classes =[AdminOrReadOnly]
+
     def get(self, request):
-        cantons = Canton.objects.all()
-        serializer = CantonSerializer(cantons, many=True)
-        print(serializer.data)
-        return Response(serializer.data)
+        try:
+            cantons = Canton.objects.filter(activo=True)
+            serializer = CantonSerializer(cantons, many=True)
+            return Response({'data':serializer.data,'success':True,'message':'Listado de todos los cantones'},status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'data':[],'success':False,'message':str(e)},status=status.HTTP_404_NOT_FOUND)
+    
     def post(self, request):
         try:
             serializer=CantonSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data,status=status.HTTP_201_CREATED)
+                return Response({'data':serializer.data,'success':True,'message':'Canton creado exitosamente'},status=status.HTTP_201_CREATED)
             else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'data':serializer.errors,'success':False,'message':'No se puede crear el cantón'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(str(e))
+            return Response({'data':serializer.errors,'success':False,'message':str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 #buscar por id
 class CantonDetalleAV(APIView):
@@ -35,28 +39,32 @@ class CantonDetalleAV(APIView):
         try:
             canton = Canton.objects.get(pk=pk)
             serializer = CantonSerializer(canton)
-            return Response(serializer.data,status=status.HTTP_200_OK)
+            return Response({'data':serializer.data,'success':True,'message':'Cantón encontrado'},status=status.HTTP_200_OK)
         except:
-            return Response({'error':'Canton no encontrado'},status=status.HTTP_404_NOT_FOUND)
+            return Response({'data':[],'success':False,'message':'Cantón no encontrado'},status=status.HTTP_404_NOT_FOUND)
     #actulizar
     def put(self, request, pk):
         try:
             canton = Canton.objects.get(pk=pk)
         except Canton.DoesNotExist:
-            return Response({'error':'Canton no encontrado'},status=status.HTTP_404_NOT_FOUND)
-        serializer=CantonSerializer(canton,data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'data':[],'success':False,'message':'Cantón no encontrado'},status=status.HTTP_404_NOT_FOUND)
+        ## TODO OK
+        try:
+            serializer=CantonSerializer(canton,data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'data':serializer.data,'success':True,'message':'Cantón actualizado exitosamente'},status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({'data':serializer.errors,'success':False,'message':str(e)}, status=status.HTTP_400_BAD_REQUEST)
     def delete(self, request, pk):
         try:
             canton = Canton.objects.get(pk=pk)
-        except:
-            return Response({'error':'Canton no encontrado'},status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'data':[],'success':False,'message':str(e)},status=status.HTTP_404_NOT_FOUND)
         canton.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'data':[],'success':True,'message':'Registro eliminado'},status=status.HTTP_204_NO_CONTENT)
 
 """ @api_view()
 def listarCantones(request):

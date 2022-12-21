@@ -14,10 +14,8 @@ class ParroquiaAV(APIView):
             serializer = ParroquiaSerializer(parroquias, many=True)
             return Response({'data':serializer.data,'success':True,'message':'Listado de todas las parroquias'},status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(str(e))
+            return Response({'data':[],'success':False,'message':str(e)},status=status.HTTP_404_NOT_FOUND)
     def post(self, request):
-        print("RESQUES")
-        print(request.data)
         try:
             serializer=ParroquiaSerializer(data=request.data)
             
@@ -47,12 +45,15 @@ class ParroquiaDetalleAV(APIView):
             return Response({'data':[],'success':False,'message':'Parroquia no encontrada'},status=status.HTTP_404_NOT_FOUND)
 
         ### TODO OK
-        serializer=ParroquiaSerializer(parroquia,data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'data':serializer.data,'success':True,'message':'Parroquia actualizada exitosamente'},status=status.HTTP_200_OK)
-        else:
-            return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar la parroquia'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            serializer=ParroquiaSerializer(parroquia,data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'data':serializer.data,'success':True,'message':'Parroquia actualizada exitosamente'},status=status.HTTP_200_OK)
+            else:
+                return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar la parroquia'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({'data':serializer.errors,'success':False,'message':str(e)}, status=status.HTTP_400_BAD_REQUEST)
     def delete(self, request, pk):
         try:
             parroquia = Parroquia.objects.get(pk=pk)
