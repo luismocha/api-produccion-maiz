@@ -9,7 +9,7 @@ from rest_framework import status
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 
-from user_app.api.serializers import UserSerializer
+from user_app.api.serializers import  UserSerializer
 from django.contrib.auth import authenticate,logout
 
 ### INCIAR SESION #####
@@ -17,6 +17,7 @@ from django.contrib.auth import authenticate,logout
 def login_view(request):
     try:
         data={}
+        #import pdb; pdb.set_trace()
         #recuperamos las credenciales y autenticamos al usuarios
         usuarioName=request.data.get('username',None)
         password=request.data.get('password',None)
@@ -60,16 +61,9 @@ def usuario_id_view(request,pk):
                return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar el usuario'}, status=status.HTTP_400_BAD_REQUEST)
 
         if request.method=='DELETE':
-            #import pdb; pdb.set_trace()
-            #serializer =UserSerializer(user,data=request.data)
             serializer = UserSerializer(user)
             user.delete()
             return Response({'data':serializer.data,'success':True,'message':'Usuario elimiado exitosamente'},status=status.HTTP_200_OK)
-            """ if serializer.is_valid():
-                serializer.delete()
-            
-            else:
-               return Response({'data':serializer.errors,'success':False,'message':'No se puede elimiar el usuario'}, status=status.HTTP_400_BAD_REQUEST) """
     except Exception as e:
         return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
 
