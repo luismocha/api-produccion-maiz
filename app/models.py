@@ -41,10 +41,11 @@ class Tipo_Productor(models.Model):
 
 class Produccion(models.Model):
     year =models.DateField(max_length=100)
-    costo_totoal=models.DecimalField(max_digits=19, decimal_places=10)
+    costo_total=models.DecimalField(max_digits=19, decimal_places=10)
     precio_venta=models.DecimalField(max_digits=19, decimal_places=10)
     toneladas=models.DecimalField(max_digits=19, decimal_places=10)
     quintales=models.DecimalField(max_digits=19, decimal_places=10)
+    activo=models.BooleanField(default=True)
     fk_tipo_productor=models.ForeignKey(Tipo_Productor,on_delete=models.RESTRICT,related_name='tipoproductorlist')
     fk_productor=models.ForeignKey(Productor,on_delete=models.RESTRICT,related_name='listarproductoresproduccion')
     def __str__(self) :

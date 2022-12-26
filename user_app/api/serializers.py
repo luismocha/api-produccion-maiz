@@ -48,7 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
     def save(self):
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         try:
             password = self.validated_data['password']
             password2 = self.validated_data['password2']

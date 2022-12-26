@@ -5,7 +5,6 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from app.api.permissions import AdminOrReadOnly
-import json
 class ParroquiaAV(APIView):
     permission_classes =[AdminOrReadOnly]
     def get(self, request):

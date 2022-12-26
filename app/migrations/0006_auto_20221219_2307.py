@@ -3,7 +3,7 @@
 from django.db import migrations, models
 import django.db.models.deletion
 def insert_init_data_parroquia(apps, schema_editor):
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
     Parroquia = apps.get_model('app', 'Parroquia')
     Canton = apps.get_model('app', 'Canton')
     print(Canton)
