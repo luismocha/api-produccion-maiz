@@ -6,6 +6,7 @@ from app.models import Produccion, Productor, Tipo_Productor
 
 
 class ProduccionSerializer(serializers.ModelSerializer):
+    #import pdb; pdb.set_trace()
     fk_productor=ProductorSerializer(read_only=True)
     fk_productor_id=serializers.SlugRelatedField(queryset=Productor.objects.all(),slug_field='id', write_only=True)
     
@@ -13,8 +14,10 @@ class ProduccionSerializer(serializers.ModelSerializer):
     fk_tipo_productor_id=serializers.SlugRelatedField(queryset=Tipo_Productor.objects.all(),slug_field='id', write_only=True)
     class Meta:
         model:Produccion
+        #fields = '__all__'
         fields = ['id','year', 'costo_total', 'precio_venta', 'toneladas','quintales','activo','fk_tipo_productor_id','fk_productor_id']
     def create(self, validated_data):
+        #import pdb; pdb.set_trace()
         data = {
                 'year': validated_data.get('year', None),
                 'costo_total': validated_data.get('costo_total', None),
@@ -25,4 +28,5 @@ class ProduccionSerializer(serializers.ModelSerializer):
                 'fk_tipo_productor': validated_data.get('fk_tipo_productor_id', None),
                 'fk_productor': validated_data.get('fk_productor_id', None),
                 }
+        #return Produccion.objects.create(**validated_data)
         return Produccion.objects.create(**data)

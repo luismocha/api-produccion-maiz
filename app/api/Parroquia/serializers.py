@@ -13,16 +13,7 @@ class ParroquiaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parroquia
         fields = ['id','nombre', 'fk_canton', 'fk_canton_id', 'activo']
-        #fields = ['canton_nombre']
-        #fields = ('id', 'nombre', 'canton_nombre')
-        #read_only_fields = ('canton_nombre')
-        #fields = ('canton_nombre')
-        #exclude = ('canton_nombre')
-    #id= serializers.IntegerField(read_only=True)
-    #nombre= serializers.CharField()
-    #fk_canton= serializers.PrimaryKeyRelatedField( many=False,queryset=Canton.objects.all(), write_only=True)
-    #fk_canton= serializers.IntegerField()
-    #activo= serializers.BooleanField()
+
     
     def create(self, validated_data):
         data = {

@@ -42,8 +42,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'app',
     'user_app',
-    'debug_toolbar',
-    'django_pdb', 
 ]
 
 MIDDLEWARE = [
