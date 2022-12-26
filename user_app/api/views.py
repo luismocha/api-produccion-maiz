@@ -28,6 +28,7 @@ def login_view(request):
             data['response']='Inicio de sesión exitosamente'
             data['username']=user.username
             data['email']=user.email
+            data['is_staff']=user.is_staff
             token=Token.objects.get(user=user).key
             data['token']=token
             return Response({'data':data,'success':True,'message':'Inicio de sesión exitosamente'},status=status.HTTP_200_OK)
@@ -72,7 +73,7 @@ def usuario_id_view(request,pk):
     except Exception as e:
         return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
 
-
+########## LISTAR TODOS LOS USUARIOS #########
 @api_view(['GET'])
 @permission_classes([AdminAuthPutOrReadOnly])
 def listar_usuarios_view(request):
@@ -89,6 +90,7 @@ def listar_usuarios_view(request):
     except Exception as e:
         return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_400_BAD_REQUEST)
 
+## CERRAR  SESION ######
 @api_view(['POST'])
 #@permission_classes([AdminOrReadOnly])
 def logout_view(request):
@@ -129,6 +131,7 @@ def registration_view(request):
                 data['response']='El registro del usuario fue exitoso'
                 data['username']=account.username
                 data['email']=account.email
+                data['is_staff']=account.is_staff
                 token=Token.objects.get(user=account).key
                 data['token']=token
                 return Response({'data':data,'success':True,'message':'Usuario creado exitosamente'},status=status.HTTP_201_CREATED)

@@ -29,7 +29,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             ## TOODO OK
             account = User(email=self.validated_data['email'],username=self.validated_data['username'])
             account.set_password(password)
-            account.is_staff=True
+            account.is_staff=self.validated_data['is_staff']
             account.save()
             return account
         except Exception as e:
@@ -48,7 +48,8 @@ class UserSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.username=validated_data.get('username',instance.username)
         instance.email=validated_data.get('email',instance.email)
-        instance.password=validated_data.get('password',instance.longitud)
+        instance.password=validated_data.get('password',instance.password)
+        instance.is_staff=validated_data.get('is_staff',instance.is_staff)
         instance.save()
         return instance
 """     def delete(self, instance, validated_data):
