@@ -34,7 +34,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise serializers.ValidationError({'error':'ERROR','message':str(e)})
 
-            
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -43,3 +43,10 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True}
         }
+    
+    def update(self, instance, validated_data):
+        instance.username=validated_data.get('username',instance.username)
+        instance.email=validated_data.get('email',instance.email)
+        instance.password=validated_data.get('password',instance.longitud)
+        instance.save()
+        return instance

@@ -4,6 +4,7 @@ from django.db import migrations, models
 import django.db.models.deletion
 
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -16,4 +17,5 @@ class Migration(migrations.Migration):
             name='fk_canton',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='cantoneslist', to='app.canton'),
         ),
+        
     ]

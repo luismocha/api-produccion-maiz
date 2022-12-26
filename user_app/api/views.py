@@ -10,7 +10,27 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 
 from user_app.api.serializers import UserSerializer
+from django.contrib.auth import authenticate
+from rest_framework.views import APIView
 
+@api_view(['POST'])
+def login_view(request):
+        data={}
+        #recuperamos las credenciales y autenticamos al usuarios
+        usuarioName=request.data.get('username',None)
+        password=request.data.get('password',None)
+        userAuth=authenticate(username=usuarioName, password=password)
+        ## si es correcto añadirmos a la reques la ifnroamcion de sesion
+        if userAuth:
+            User = get_user_model()
+            user = User.objects.get(username=usuarioName)
+            data['response']='Inicio de sesión exitosamente'
+            data['username']=user.username
+            data['email']=user.email
+            token=Token.objects.get(user=user).key
+            data['token']=token
+            return Response({'data':data,'success':True,'message':'Inicio de sesión exitosamente'},status=status.HTTP_200_OK)
+        return Response({'data':data,'success':False,'message':'Contraseña o usuario incorrecto'},status=status.HTTP_404_NOT_FOUND)
 @api_view(['GET','PUT'])
 @permission_classes([AdminAuthPutOrReadOnly])
 def usuario_id_view(request,pk):
@@ -26,22 +46,15 @@ def usuario_id_view(request,pk):
             return Response({'data':serializer.data,'success':True,'message':'Usuario encontrado'},status=status.HTTP_200_OK)
         
         if request.method=='PUT':
-            serializer =UserSerializer(user)
-            return Response({'data':serializer.data,'success':True,'message':'XXUsuario encontrado'},status=status.HTTP_200_OK)
+            serializer =UserSerializer(user,data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'data':serializer.data,'success':True,'message':'Usuario actualizado exitosamente'},status=status.HTTP_200_OK)
+            else:
+               return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar el usuario'}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['PUT'])
-#@permission_classes([AdminAuthPutOrReadOnly])
-def usuarios_update_id_view(request,pk):
-    try:
-        import pdb; pdb.set_trace()
-        User = get_user_model()
-        user = User.objects.get(pk=pk)
-        serializer =UserSerializer(user)
-        return Response({'data':serializer.data,'success':True,'message':'Usuario encontrado'},status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET'])
 @permission_classes([AdminAuthPutOrReadOnly])
@@ -71,6 +84,9 @@ def logout_view(request):
             return Response({'data':[],'success':True,'message':'Sesión cerrada exitosamente'},status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
+
+
+
 
 @api_view(['POST'])
 @permission_classes([AdminOrReadOnly])

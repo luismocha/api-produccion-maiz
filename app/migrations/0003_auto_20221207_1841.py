@@ -3,6 +3,15 @@
 from django.db import migrations, models
 import django.db.models.deletion
 
+def insert_init_data_canton(apps, schema_editor):
+    Canton = apps.get_model('app', 'Canton')
+    Canton.objects.create(nombre='Celica',latitud='-4.10266',longitud='-79.95665')
+    Canton.objects.create(nombre='Pindal',latitud='--4.1143',longitud='-80.10679')
+    Canton.objects.create(nombre='Zapotillo',latitud='-4.38636',longitud='-4.38636')
+
+def undo_insert_data_tipo_canton(apps, schema_editor):
+    Canton = apps.get_model('app', 'Canton')
+    Canton.objects.all().delete()
 
 class Migration(migrations.Migration):
 
@@ -38,4 +47,5 @@ class Migration(migrations.Migration):
                 ('fk_canton', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='canton_productor', to='app.canton')),
             ],
         ),
+        migrations.RunPython(insert_init_data_canton,undo_insert_data_tipo_canton),
     ]

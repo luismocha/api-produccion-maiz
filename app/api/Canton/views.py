@@ -60,9 +60,9 @@ class CantonDetalleAV(APIView):
                 serializer.save()
                 return Response({'data':serializer.data,'success':True,'message':'Cantón actualizado exitosamente'},status=status.HTTP_200_OK)
             else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar el cantón'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response({'data':serializer.errors,'success':False,'message':str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'data':serializer.errors,'success':False,'message':"ERROR "+str(e)}, status=status.HTTP_400_BAD_REQUEST)
     def delete(self, request, pk):
         try:
             canton = Canton.objects.get(pk=pk)

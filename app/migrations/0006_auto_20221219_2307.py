@@ -2,7 +2,37 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
+def insert_init_data_parroquia(apps, schema_editor):
+    import pdb; pdb.set_trace()
+    Parroquia = apps.get_model('app', 'Parroquia')
+    Canton = apps.get_model('app', 'Canton')
+    print(Canton)
+    contador=0
+    for canton in Canton.objects.all():
+        contador=contador+1
+        Parroquia.objects.create(nombre='POZUL'+str(contador),fk_canton=canton)
+        print (canton) 
+"""         Parroquia.objects.create(nombre='POZUL',fk_canton=1)
+        Parroquia.objects.create(nombre='CRUSPAMBA',fk_canton=1)
+        Parroquia.objects.create(nombre='SABANILLA',fk_canton=1)
+        Parroquia.objects.create(nombre='TENT. MAXIMILIANO RODRIGEZ',fk_canton=1)
+        Parroquia.objects.create(nombre='POZUL',fk_canton=1)
+        Parroquia.objects.create(nombre='CRUSPAMBA',fk_canton=1)
+        Parroquia.objects.create(nombre='SABANILLA',fk_canton=1)
+        Parroquia.objects.create(nombre='TENT. MAXIMILIANO RODRIGEZ',fk_canton=1)
 
+        Parroquia.objects.create(nombre='CHAQUINAL',fk_canton=2)
+        Parroquia.objects.create(nombre='12 de DICIMBRE',fk_canton=2)
+
+        Parroquia.objects.create(nombre='CAZADEROS',fk_canton=3)
+        Parroquia.objects.create(nombre='GARZA REAL',fk_canton=3)
+        Parroquia.objects.create(nombre='LIMONES',fk_canton=3)
+        Parroquia.objects.create(nombre='PALETILLAS',fk_canton=3)
+        Parroquia.objects.create(nombre='BOLASPAMBAS',fk_canton=3) """
+
+def undo_insert_data_tipo_parroquia(apps, schema_editor):
+    Parroquia = apps.get_model('app', 'Parroquia')
+    Parroquia.objects.all().delete()
 
 class Migration(migrations.Migration):
 
@@ -26,4 +56,5 @@ class Migration(migrations.Migration):
             name='fk_parroquia',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='parroquialist', to='app.parroquia'),
         ),
+        migrations.RunPython(insert_init_data_parroquia,undo_insert_data_tipo_parroquia),
     ]
