@@ -29,6 +29,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             ## TOODO OK
             account = User(email=self.validated_data['email'],username=self.validated_data['username'])
             account.set_password(password)
+            account.is_staff=True
             account.save()
             return account
         except Exception as e:
@@ -38,7 +39,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email', 'id', 'password')
+        fields = ('username', 'email', 'id', 'password','is_staff')
         read_only_fields = ('id',)
         extra_kwargs = {
             'password': {'write_only': True}
@@ -50,3 +51,6 @@ class UserSerializer(serializers.ModelSerializer):
         instance.password=validated_data.get('password',instance.longitud)
         instance.save()
         return instance
+"""     def delete(self, instance, validated_data):
+        instance.delete()
+        return instance  """

@@ -10,11 +10,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 
 from user_app.api.serializers import UserSerializer
-from django.contrib.auth import authenticate
-from rest_framework.views import APIView
+from django.contrib.auth import authenticate,logout
 
+### INCIAR SESION #####
 @api_view(['POST'])
 def login_view(request):
+    try:
         data={}
         #recuperamos las credenciales y autenticamos al usuarios
         usuarioName=request.data.get('username',None)
@@ -31,7 +32,11 @@ def login_view(request):
             data['token']=token
             return Response({'data':data,'success':True,'message':'Inicio de sesión exitosamente'},status=status.HTTP_200_OK)
         return Response({'data':data,'success':False,'message':'Contraseña o usuario incorrecto'},status=status.HTTP_404_NOT_FOUND)
-@api_view(['GET','PUT'])
+    except Exception as e:
+        return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
+
+### OBTENRE USUARIO POR ID Y ACTUALIZAR USUARIO POR ID
+@api_view(['GET','PUT','DELETE'])
 @permission_classes([AdminAuthPutOrReadOnly])
 def usuario_id_view(request,pk):
     try:
@@ -52,6 +57,18 @@ def usuario_id_view(request,pk):
                 return Response({'data':serializer.data,'success':True,'message':'Usuario actualizado exitosamente'},status=status.HTTP_200_OK)
             else:
                return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar el usuario'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if request.method=='DELETE':
+            #import pdb; pdb.set_trace()
+            #serializer =UserSerializer(user,data=request.data)
+            serializer = UserSerializer(user)
+            user.delete()
+            return Response({'data':serializer.data,'success':True,'message':'Usuario elimiado exitosamente'},status=status.HTTP_200_OK)
+            """ if serializer.is_valid():
+                serializer.delete()
+            
+            else:
+               return Response({'data':serializer.errors,'success':False,'message':'No se puede elimiar el usuario'}, status=status.HTTP_400_BAD_REQUEST) """
     except Exception as e:
         return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
 
@@ -78,7 +95,6 @@ def logout_view(request):
     print("**  CERRAR SESION USER *****")
     print(request)
     try:
-        print(request.user)
         if request.method == 'POST':
             request.user.auth_token.delete()
             return Response({'data':[],'success':True,'message':'Sesión cerrada exitosamente'},status=status.HTTP_200_OK)
@@ -87,7 +103,7 @@ def logout_view(request):
 
 
 
-
+#### REGISTRAR USUARIO ########
 @api_view(['POST'])
 @permission_classes([AdminOrReadOnly])
 def registration_view(request):

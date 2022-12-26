@@ -13,16 +13,10 @@ class AdminOrReadOnly(permissions.IsAdminUser):
         return staff_permissio
 class AdminAuthPutOrReadOnly(permissions.IsAdminUser):
      def has_permission(self, request, view):
-        print(self)
-        print('-----REQUEST')
-        print(request)
-        print(view)
-        if request.method =='GET' or request.method =='PUT':
-            staff_permissio=bool(request.user and request.user.is_staff)
-            return staff_permissio
-"""         if request.method =='PUT':
-            staff_permissio=bool(request.user and request.user.is_staff)
-            return staff_permissio """
+        staff_permissio=bool(request.user and request.user.is_staff)
+        return staff_permissio
+        #if request.method =='GET' or request.method =='PUT' or request.method =='DELETE':
+   
 class AuthPermisos(permissions.BasePermission):
     def has_object_permission(self,request,view,object):
         #safe== metodos get
