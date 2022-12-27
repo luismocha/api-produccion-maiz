@@ -31,3 +31,39 @@ class ProduccionAV(APIView):
                 return Response({'data':serializer.errors,'success':False,'message':'No se puede crear la Producción'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'data':serializer.errors,'success':False,'message':"ERROR "+str(e)}, status=status.HTTP_400_BAD_REQUEST)
+#buscar por id
+class ProduccionDetalleAV(APIView):
+    permission_classes =[AdminOrReadOnly]
+    #### obtener produccion por id
+    def get(self, request, pk):
+        try:
+            produccion = Produccion.objects.get(pk=pk)
+            serializer = ProduccionSerializer(produccion)
+            return Response({'data':serializer.data,'success':True,'message':'Producción encontrada'},status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'data':[],'success':False,'message':'ERROR '+str(e)},status=status.HTTP_404_NOT_FOUND)
+    ## actulizar
+    def put(self, request, pk):
+        try:
+            produccion = Produccion.objects.get(pk=pk)
+        except Produccion.DoesNotExist:
+            return Response({'data':[],'success':False,'message':'Producción no encontrada'},status=status.HTTP_404_NOT_FOUND)
+
+        ### TODO OK
+        try:
+            serializer=ProduccionSerializer(produccion,data=request.data)
+            ##el usuario solo puede tener una produccion por año
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'data':serializer.data,'success':True,'message':'Producción actualizada exitosamente, el año y el productor no se pueden actulizar'},status=status.HTTP_200_OK)
+            else:
+                return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar la producción'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({'data':serializer.errors,'success':False,'message':"ERROR "+str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request, pk):
+        try:
+            produccion = Produccion.objects.get(pk=pk)
+        except Exception as e:
+            return Response({'data':[],'success':False,'message':"ERROR"+str(e)},status=status.HTTP_404_NOT_FOUND)
+        produccion.delete()
+        return Response({'data':[],'success':True,'message':'Registro eliminado'},status=status.HTTP_204_NO_CONTENT)

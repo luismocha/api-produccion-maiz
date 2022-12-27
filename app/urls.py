@@ -1,6 +1,6 @@
 from django.urls import path
 from app.api.Parroquia.views import ParroquiaAV, ParroquiaDetalleAV
-from app.api.Produccion.view import ProduccionAV
+from app.api.Produccion.view import ProduccionAV, ProduccionDetalleAV
 from app.api.Productor.views import ProductorAV, ProductorDetalleAV
 from app.api.Canton.views import CantonDetalleAV,CantonAV
 from app.api.TipoProductor.views import TipoProductoresAV
@@ -16,8 +16,8 @@ urlpatterns = [
    path('productores/',ProductorAV.as_view(),name='listar-productores'),
    path('productores/<int:pk>',ProductorDetalleAV.as_view(),name='detalle-productores'),
 
-   path('producciones/',ProduccionAV.as_view(),name='detalle-producciones'),    
-   path('producciones/<int:pk>',ProduccionAV.as_view(),name='detalle-producciones'),
+   path('producciones/',ProduccionAV.as_view(),name='listar-producciones'),    
+   path('producciones/<int:pk>',ProduccionDetalleAV.as_view(),name='detalle-producciones'),
 
    path('tipos-productores/',TipoProductoresAV.as_view(),name='tipos-productores'),   
 ]

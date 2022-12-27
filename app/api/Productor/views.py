@@ -73,6 +73,6 @@ class ProductorDetalleAV(APIView):
             productor = Productor.objects.get(pk=pk)
         except  Exception as e:
             return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
-        productor.delete()
-        return Response({'data':[],'success':True,'message':'Registro eliminado'},status=status.HTTP_204_NO_CONTENT)
+        #productor.delete()
+        return Response({'data':[],'success':True,'message':'Solicitud exitosa, el productor no se puede eliminar por reglas del negocio'},status=status.HTTP_204_NO_CONTENT)
 

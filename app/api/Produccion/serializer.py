@@ -41,3 +41,15 @@ class ProduccionSerializer(serializers.ModelSerializer):
                 }
         #return Produccion.objects.create(**validated_data)
         return Produccion.objects.create(**data)
+    def update(self,instancia,validated_data):
+        # el año ni el productor no puede actulizar
+        #instancia.year=validated_data.get('year',instancia.year)
+        instancia.costo_total=validated_data.get('costo_total',instancia.costo_total)
+        instancia.precio_venta=validated_data.get('precio_venta',instancia.precio_venta)
+        instancia.toneladas=validated_data.get('toneladas',instancia.toneladas)
+        instancia.quintales=validated_data.get('quintales',instancia.quintales)
+        instancia.activo=validated_data.get('activo',instancia.activo)
+        instancia.fk_tipo_productor=validated_data.get('fk_tipo_productor',instancia.fk_tipo_productor)
+        #instancia.fk_productor=validated_data.get('fk_productor',instancia.fk_productor)
+        instancia.save()
+        return instancia 
