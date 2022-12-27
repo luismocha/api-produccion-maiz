@@ -41,7 +41,7 @@ class Tipo_Productor(models.Model):
 
 class Produccion(models.Model):
     year =models.PositiveIntegerField(max_length=4)
-    hectarias=models.DecimalField(max_digits=19, decimal_places=2)
+    hectareas=models.DecimalField(max_digits=19, decimal_places=2)
     precio_venta=models.DecimalField(max_digits=19, decimal_places=2)
     toneladas=models.DecimalField(max_digits=19, decimal_places=2)
     quintales=models.DecimalField(max_digits=19, decimal_places=2)
@@ -51,5 +51,8 @@ class Produccion(models.Model):
     def __str__(self) :
         return str(self.year)
 
-
+""" class Intermediario(models.Model):
+    year =models.PositiveIntegerField(max_length=4)
+    hectarias=models.DecimalField(max_digits=19, decimal_places=2)
+    pass """
 
