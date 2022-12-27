@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from app.api.Productor.serializer import ProductorSerializer
 from app.api.TipoProductor.serializers import TipoProductorSerializer
-
 from app.models import Produccion, Productor, Tipo_Productor
+
 
 
 class ProduccionSerializer(serializers.ModelSerializer):
@@ -12,9 +12,9 @@ class ProduccionSerializer(serializers.ModelSerializer):
     
     fk_tipo_productor=TipoProductorSerializer(read_only=True)
     fk_tipo_productor_id=serializers.SlugRelatedField(queryset=Tipo_Productor.objects.all(),slug_field='id', write_only=True)
+    
     class Meta:
-        model:Produccion
-        #fields = '__all__'
+        model=Produccion
         fields = [
             'id',
             'year', 
@@ -23,10 +23,10 @@ class ProduccionSerializer(serializers.ModelSerializer):
             'toneladas',
             'quintales',
             'activo',
-            'fk_tipo_productor',
-            'fk_tipo_productor_id',
             'fk_productor',
-            'fk_productor_id'
+            'fk_productor_id',
+            'fk_tipo_productor',
+            'fk_tipo_productor_id'
             ]
     def create(self, validated_data):
         data = {

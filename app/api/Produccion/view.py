@@ -18,9 +18,10 @@ class ProduccionAV(APIView):
     def post(self, request):
         #import pdb; pdb.set_trace()
         try:
-            """  produccion=Produccion.objects.filter(nombre=request.data['nombre']).first()
-                if  parroquia:
-                    return Response({'data':[],'success':False,'message':'Ya existe una parroquia con el nombre de '+request.data['nombre']},status=status.HTTP_404_NOT_FOUND) """
+            ##el usuario solo puede tener una produccion por año
+            produccion=Produccion.objects.filter(fk_productor=request.data['fk_productor_id'],year=request.data['year'],activo=True).first()
+            if  produccion:
+                return Response({'data':[],'success':False,'message':'Ya existe una producción registrada con el mismo productor y el mismo año'},status=status.HTTP_404_NOT_FOUND)
             ###### TODO OK
             serializer=ProduccionSerializer( data=request.data)
             if serializer.is_valid():

@@ -2,7 +2,21 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
+def insert_init_data_productor(apps, schema_editor):
+    Productor = apps.get_model('app', 'Productor')
+    canton = apps.get_model('app', 'Canton')
+    parroquia = apps.get_model('app', 'Parroquia')
+    Productor.objects.create(
+        nombre='Juan',
+        apellido='Perez',
+        cedula=1105116899,
+        fk_canton=canton.objects.get(id=3),
+        fk_parroquia=parroquia.objects.get(id=3),
+        celular='0998202201')
 
+def undo_insert_data_productor(apps, schema_editor):
+    Productor = apps.get_model('app', 'Productor')
+    Productor.objects.all().delete()
 
 class Migration(migrations.Migration):
 
@@ -17,4 +31,5 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='parroquia_productor', to='app.parroquia'),
             preserve_default=False,
         ),
+         #migrations.RunPython(insert_init_data_productor,undo_insert_data_productor),
     ]

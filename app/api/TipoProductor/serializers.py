@@ -8,4 +8,4 @@ class TipoProductorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tipo_Productor
-        fields = '__all__'
+        fields = ['id', 'nombre']
