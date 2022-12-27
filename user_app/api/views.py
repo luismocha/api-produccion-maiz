@@ -54,6 +54,7 @@ def usuario_id_view(request,pk):
             return Response({'data':serializer.data,'success':True,'message':'Usuario encontrado'},status=status.HTTP_200_OK)
         
         if request.method=='PUT':
+            ## para q no se cree dos veces el mismo objeto
             serializer =UserSerializer(
                 data=request.data, instance=user, context={'request': request}
                 )
