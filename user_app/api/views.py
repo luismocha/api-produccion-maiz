@@ -9,7 +9,7 @@ from rest_framework import status
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 
-from user_app.api.serializers import  UserSerializer
+from user_app.api.serializers import    RegistrationSerializer, UserSerializer
 from django.contrib.auth import authenticate,logout
 
 ### INCIAR SESION #####
@@ -54,7 +54,9 @@ def usuario_id_view(request,pk):
             return Response({'data':serializer.data,'success':True,'message':'Usuario encontrado'},status=status.HTTP_200_OK)
         
         if request.method=='PUT':
-            serializer =UserSerializer(user,data=request.data)
+            serializer =UserSerializer(
+                data=request.data, instance=user, context={'request': request}
+                )
             if serializer.is_valid():
                 serializer.save()
                 return Response({'data':serializer.data,'success':True,'message':'Usuario actualizado exitosamente'},status=status.HTTP_200_OK)
@@ -87,7 +89,6 @@ def listar_usuarios_view(request):
 
 ## CERRAR  SESION ######
 @api_view(['POST'])
-#@permission_classes([AdminOrReadOnly])
 def logout_view(request):
     print("**  CERRAR SESION USER *****")
     print(request)
@@ -118,7 +119,7 @@ def registration_view(request):
             if  users_email:
                 return Response({'data':[],'success':False,'message':'Ya existe un usurio con el correo de '+request.data['email']},status=status.HTTP_404_NOT_FOUND)
             ## TODO OKKKK
-            serializer=UserSerializer(data=request.data)
+            serializer=RegistrationSerializer(data=request.data)
             data={}
             if serializer.is_valid():
                 account=serializer.save()
