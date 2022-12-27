@@ -24,14 +24,14 @@ def login_view(request):
         userAuth=authenticate(username=usuarioName, password=password)
         ## si es correcto añadirmos a la reques la ifnroamcion de sesion
         if userAuth:
-            User = get_user_model()
+            #User = get_user_model()
             user = User.objects.get(username=usuarioName)
             data['response']='Inicio de sesión exitosamente'
             data['username']=user.username
             data['email']=user.email
             data['is_staff']=user.is_staff
-            token=Token.objects.get(user=user).key
-            data['token']=token
+            token, _ = Token.objects.get_or_create(user=userAuth)
+            data['token']=token.key
             return Response({'data':data,'success':True,'message':'Inicio de sesión exitosamente'},status=status.HTTP_200_OK)
         return Response({'data':data,'success':False,'message':'Contraseña o usuario incorrecto'},status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
@@ -92,8 +92,8 @@ def logout_view(request):
     print(request)
     try:
         if request.method == 'POST':
-            logout(request)
-            #request.user.auth_token.delete()
+            #logout(request)
+            request.user.auth_token.delete()
             return Response({'data':[],'success':True,'message':'Sesión cerrada exitosamente'},status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
