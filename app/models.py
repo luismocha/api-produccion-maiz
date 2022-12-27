@@ -41,7 +41,7 @@ class Tipo_Productor(models.Model):
 
 class Produccion(models.Model):
     year =models.PositiveIntegerField(max_length=4)
-    costo_total=models.DecimalField(max_digits=19, decimal_places=2)
+    hecatarias=models.DecimalField(max_digits=19, decimal_places=2)
     precio_venta=models.DecimalField(max_digits=19, decimal_places=2)
     toneladas=models.DecimalField(max_digits=19, decimal_places=2)
     quintales=models.DecimalField(max_digits=19, decimal_places=2)

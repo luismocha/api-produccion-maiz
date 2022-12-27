@@ -21,6 +21,7 @@ class ProduccionSerializer(serializers.ModelSerializer):
             'costo_total', 
             'precio_venta', 
             'toneladas',
+            'toneladas',
             'quintales',
             'activo',
             'fk_productor',

@@ -41,6 +41,7 @@ def login_view(request):
 @api_view(['GET','PUT','DELETE'])
 @permission_classes([AdminAuthPutOrReadOnly])
 def usuario_id_view(request,pk):
+    #import pdb; pdb.set_trace()
     try:
         User = get_user_model()
         user = User.objects.get(pk=pk)
