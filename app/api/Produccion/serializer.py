@@ -45,7 +45,7 @@ class ProduccionSerializer(serializers.ModelSerializer):
     def update(self,instancia,validated_data):
         # el año ni el productor no puede actulizar
         #instancia.year=validated_data.get('year',instancia.year)
-        instancia.costo_total=validated_data.get('costo_total',instancia.costo_total)
+        instancia.hectareas=validated_data.get('hectareas',instancia.hectareas)
         instancia.precio_venta=validated_data.get('precio_venta',instancia.precio_venta)
         instancia.toneladas=validated_data.get('toneladas',instancia.toneladas)
         instancia.quintales=validated_data.get('quintales',instancia.quintales)
