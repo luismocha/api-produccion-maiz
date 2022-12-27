@@ -10,6 +10,7 @@ class ProductorSerializer(serializers.ModelSerializer):
     ##parroquiaslist=ParroquiaSerializer(many=True,read_only=True)
     fk_canton=CantonSerializer(read_only=True)
     fk_canton_id=serializers.SlugRelatedField(queryset=Canton.objects.all(),slug_field='id', write_only=True)
+    
     fk_parroquia=ParroquiaSerializer(read_only=True)
     fk_parroquia_id=serializers.SlugRelatedField(queryset=Parroquia.objects.all(),slug_field='id', write_only=True)
     #parroquia_nombre=serializers.CharField(source='Parroquia.nombre',read_only=True)

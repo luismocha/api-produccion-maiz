@@ -8,6 +8,7 @@ from rest_framework import status
 class ProduccionAV(APIView):
     permission_classes =[AdminOrReadOnly]
     def get(self, request):
+        #import pdb; pdb.set_trace()
         try:
             producciones = Produccion.objects.filter(activo=True)
             serializer = ProduccionSerializer(producciones, many=True)
@@ -21,8 +22,7 @@ class ProduccionAV(APIView):
                 if  parroquia:
                     return Response({'data':[],'success':False,'message':'Ya existe una parroquia con el nombre de '+request.data['nombre']},status=status.HTTP_404_NOT_FOUND) """
             ###### TODO OK
-            serializer=ProduccionSerializer(data=request.data)
-            
+            serializer=ProduccionSerializer( data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response({'data':serializer.data,'success':True,'message':'Producción creada exitosamente'},status=status.HTTP_201_CREATED)

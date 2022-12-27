@@ -15,9 +15,20 @@ class ProduccionSerializer(serializers.ModelSerializer):
     class Meta:
         model:Produccion
         #fields = '__all__'
-        fields = ['id','year', 'costo_total', 'precio_venta', 'toneladas','quintales','activo','fk_tipo_productor_id','fk_productor_id']
+        fields = [
+            'id',
+            'year', 
+            'costo_total', 
+            'precio_venta', 
+            'toneladas',
+            'quintales',
+            'activo',
+            'fk_tipo_productor',
+            'fk_tipo_productor_id',
+            'fk_productor',
+            'fk_productor_id'
+            ]
     def create(self, validated_data):
-        #import pdb; pdb.set_trace()
         data = {
                 'year': validated_data.get('year', None),
                 'costo_total': validated_data.get('costo_total', None),

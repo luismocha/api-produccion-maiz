@@ -49,7 +49,7 @@ class Produccion(models.Model):
     fk_tipo_productor=models.ForeignKey(Tipo_Productor,on_delete=models.RESTRICT,related_name='tipoproductorlist')
     fk_productor=models.ForeignKey(Productor,on_delete=models.RESTRICT,related_name='listarproductoresproduccion')
     def __str__(self) :
-        return self.year
+        return str(self.year)
 
 
 

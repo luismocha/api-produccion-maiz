@@ -92,7 +92,8 @@ def logout_view(request):
     print(request)
     try:
         if request.method == 'POST':
-            request.user.auth_token.delete()
+            logout(request)
+            #request.user.auth_token.delete()
             return Response({'data':[],'success':True,'message':'Sesión cerrada exitosamente'},status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
