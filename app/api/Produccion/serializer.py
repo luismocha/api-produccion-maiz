@@ -18,7 +18,7 @@ class ProduccionSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'year', 
-            'costo_total', 
+            'hectarias', 
             'precio_venta', 
             'toneladas',
             'toneladas',
@@ -32,7 +32,7 @@ class ProduccionSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         data = {
                 'year': validated_data.get('year', None),
-                'costo_total': validated_data.get('costo_total', None),
+                'hectarias': validated_data.get('hectarias', None),
                 'precio_venta': validated_data.get('precio_venta', None),
                 'toneladas': validated_data.get('toneladas', None),
                 'quintales': validated_data.get('quintales', None),
