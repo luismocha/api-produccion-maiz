@@ -56,8 +56,11 @@ class Lugar(models.Model):
     def __str__(self) :
         return self.nombre
 
-""" class Intermediario(models.Model):
-    year =models.PositiveIntegerField(max_length=4)
-    hectarias=models.DecimalField(max_digits=19, decimal_places=2)
-    pass """
+class Intermediario(models.Model):
+    year_compra =models.PositiveIntegerField(max_length=4)
+    cantidad_comprada=models.DecimalField(max_digits=19, decimal_places=2)
+    activo=models.BooleanField(default=True)
+    fk_lugar=models.ForeignKey(Lugar,on_delete=models.RESTRICT,related_name='lugarlist')
+    def __str__(self) :
+        return str(self.year_compra)
 

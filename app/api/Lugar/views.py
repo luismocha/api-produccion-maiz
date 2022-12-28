@@ -13,7 +13,7 @@ class LugarAV(APIView):
     permission_classes =[AdminOrReadOnly]
     def get(self, request):
         try:
-            lugars = Lugar.objects.all()
+            lugars = Lugar.objects.filter(activo=True)
             serializer = LugarSerializer(lugars, many=True)
             return Response({'data':serializer.data,'success':True,'message':'Listado de todos los lugares'},status=status.HTTP_200_OK)
         except Exception as e:
