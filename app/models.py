@@ -50,6 +50,11 @@ class Produccion(models.Model):
     fk_productor=models.ForeignKey(Productor,on_delete=models.RESTRICT,related_name='listarproductoresproduccion')
     def __str__(self) :
         return str(self.year)
+class Lugar(models.Model):
+    nombre=models.CharField(max_length=100,unique=True)
+    activo=models.BooleanField(default=True)
+    def __str__(self) :
+        return self.nombre
 
 """ class Intermediario(models.Model):
     year =models.PositiveIntegerField(max_length=4)
