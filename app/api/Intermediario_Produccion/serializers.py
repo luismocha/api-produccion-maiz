@@ -18,6 +18,7 @@ class IntermediarioProduccionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Intermediario_Produccion
         fields = [
+            'id',
             'fk_intermediario',
             'fk_intermediario_id',
             'fk_produccion',
@@ -28,19 +29,21 @@ class IntermediarioProduccionSerializer(serializers.ModelSerializer):
         ]
         
     
-"""     def create(self, validated_data):
+    def create(self, validated_data):
         data = {
                 'year_compra': validated_data.get('year_compra', None),
                 'cantidad_comprada': validated_data.get('cantidad_comprada', None),
                 'activo': validated_data.get('activo', None),
-                'fk_lugar': validated_data.get('fk_lugar_id', None)
+                'fk_intermediario': validated_data.get('fk_intermediario_id', None),
+                'fk_produccion': validated_data.get('fk_produccion_id', None),
                 }
-        return Intermediario.objects.create(**data)
+        return Intermediario_Produccion.objects.create(**data)
 
     def update(self,instancia,validated_data):
         instancia.year_compra=validated_data.get('year_compra',instancia.year_compra)
         instancia.cantidad_comprada=validated_data.get('cantidad_comprada',instancia.cantidad_comprada)
         instancia.activo=validated_data.get('activo',instancia.activo)
-        instancia.fk_lugar=validated_data.get('fk_lugar_id',instancia.fk_lugar)
+        instancia.fk_produccion=validated_data.get('fk_produccion_id',instancia.fk_produccion)
+        instancia.fk_intermediario=validated_data.get('fk_intermediario_id',instancia.fk_intermediario)
         instancia.save()
-        return instancia  """
+        return instancia  

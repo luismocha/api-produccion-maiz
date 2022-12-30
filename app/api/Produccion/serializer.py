@@ -6,6 +6,7 @@ from app.models import Produccion, Productor, Tipo_Productor
 
 
 class ProduccionSerializer(serializers.ModelSerializer):
+    stock=serializers.IntegerField(read_only=True)
     #import pdb; pdb.set_trace()
     fk_productor=ProductorSerializer(read_only=True)
     fk_productor_id=serializers.SlugRelatedField(queryset=Productor.objects.all(),slug_field='id', write_only=True)
@@ -53,6 +54,7 @@ class ProduccionSerializer(serializers.ModelSerializer):
         instancia.toneladas=validated_data.get('toneladas',instancia.toneladas)
         instancia.quintales=validated_data.get('quintales',instancia.quintales)
         instancia.activo=validated_data.get('activo',instancia.activo)
+        #instancia.stock=validated_data.get('stock',instancia.stock)
         instancia.fk_tipo_productor=validated_data.get('fk_tipo_productor_id',instancia.fk_tipo_productor)
         #instancia.fk_productor=validated_data.get('fk_productor',instancia.fk_productor)
         instancia.save()

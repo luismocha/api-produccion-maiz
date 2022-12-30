@@ -44,7 +44,7 @@ class Produccion(models.Model):
     hectareas=models.DecimalField(max_digits=19, decimal_places=2)
     precio_venta=models.DecimalField(max_digits=19, decimal_places=2)
     toneladas=models.DecimalField(max_digits=19, decimal_places=2)
-    quintales=models.PositiveIntegerField(max_length=4)
+    quintales=models.PositiveIntegerField()
     activo=models.BooleanField(default=True)
     fk_tipo_productor=models.ForeignKey(Tipo_Productor,on_delete=models.RESTRICT,related_name='tipoproductorlist')
     fk_productor=models.ForeignKey(Productor,on_delete=models.RESTRICT,related_name='listarproductoresproduccion')
@@ -75,7 +75,7 @@ class Intermediario_Produccion(models.Model):
     fk_produccion=models.ForeignKey(Produccion,on_delete=models.RESTRICT, blank=True, 
         null=True)
     year_compra =models.PositiveIntegerField(max_length=4)
-    cantidad_comprada=models.DecimalField(max_digits=19, decimal_places=2)
+    cantidad_comprada=models.PositiveIntegerField()
     activo=models.BooleanField(default=True)
     def __str__(self) :
-        return str(self.intermediario)+" "+str(self.produccion)
+        return str(self.year_compra)+" "+str(self.cantidad_comprada)
