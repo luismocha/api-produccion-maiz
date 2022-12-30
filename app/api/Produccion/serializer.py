@@ -24,6 +24,7 @@ class ProduccionSerializer(serializers.ModelSerializer):
             'toneladas',
             'quintales',
             'activo',
+            'stock',
             'fk_productor',
             'fk_productor_id',
             'fk_tipo_productor',
@@ -37,10 +38,12 @@ class ProduccionSerializer(serializers.ModelSerializer):
                 'toneladas': validated_data.get('toneladas', None),
                 'quintales': validated_data.get('quintales', None),
                 'activo': validated_data.get('activo', None),
+                'stock':validated_data.get('quintales', None),
                 'fk_tipo_productor': validated_data.get('fk_tipo_productor_id', None),
                 'fk_productor': validated_data.get('fk_productor_id', None),
                 }
         #return Produccion.objects.create(**validated_data)
+
         return Produccion.objects.create(**data)
     def update(self,instancia,validated_data):
         ####### REGLA NE NEFOCIO el año ni el productor no puede actulizar ##########

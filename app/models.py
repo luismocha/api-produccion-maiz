@@ -44,23 +44,38 @@ class Produccion(models.Model):
     hectareas=models.DecimalField(max_digits=19, decimal_places=2)
     precio_venta=models.DecimalField(max_digits=19, decimal_places=2)
     toneladas=models.DecimalField(max_digits=19, decimal_places=2)
-    quintales=models.DecimalField(max_digits=19, decimal_places=2)
+    quintales=models.PositiveIntegerField(max_length=4)
     activo=models.BooleanField(default=True)
     fk_tipo_productor=models.ForeignKey(Tipo_Productor,on_delete=models.RESTRICT,related_name='tipoproductorlist')
     fk_productor=models.ForeignKey(Productor,on_delete=models.RESTRICT,related_name='listarproductoresproduccion')
+    stock=models.PositiveIntegerField()
     def __str__(self) :
         return str(self.year)
-class Lugar(models.Model):
+""" class Lugar(models.Model):
     nombre=models.CharField(max_length=100,unique=True)
     activo=models.BooleanField(default=True)
     def __str__(self) :
-        return self.nombre
+        return self.nombre """
 
 class Intermediario(models.Model):
+    lugar=models.CharField(max_length=100,unique=True)
+    activo=models.BooleanField(default=True)
+    """     year_compra =models.PositiveIntegerField(max_length=4)
+        cantidad_comprada=models.DecimalField(max_digits=19, decimal_places=2)
+        activo=models.BooleanField(default=True)
+        produccion=models.ManyToManyField(Produccion,through='Intermediario_Produccion',blank=True)
+        fk_lugar=models.ForeignKey(Lugar,on_delete=models.RESTRICT,related_name='lugarlist') """
+    def __str__(self) :
+        return self.lugar
+        
+##tabla relacional personalizada de many to many
+class Intermediario_Produccion(models.Model):
+    fk_intermediario=models.ForeignKey(Intermediario,on_delete=models.RESTRICT, blank=True, 
+        null=True)
+    fk_produccion=models.ForeignKey(Produccion,on_delete=models.RESTRICT, blank=True, 
+        null=True)
     year_compra =models.PositiveIntegerField(max_length=4)
     cantidad_comprada=models.DecimalField(max_digits=19, decimal_places=2)
     activo=models.BooleanField(default=True)
-    fk_lugar=models.ForeignKey(Lugar,on_delete=models.RESTRICT,related_name='lugarlist')
     def __str__(self) :
-        return str(self.year_compra)
-
+        return str(self.intermediario)+" "+str(self.produccion)
