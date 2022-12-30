@@ -51,20 +51,11 @@ class Produccion(models.Model):
     stock=models.PositiveIntegerField()
     def __str__(self) :
         return str(self.year)
-""" class Lugar(models.Model):
-    nombre=models.CharField(max_length=100,unique=True)
-    activo=models.BooleanField(default=True)
-    def __str__(self) :
-        return self.nombre """
+
 
 class Intermediario(models.Model):
     lugar=models.CharField(max_length=100,unique=True)
     activo=models.BooleanField(default=True)
-    """     year_compra =models.PositiveIntegerField(max_length=4)
-        cantidad_comprada=models.DecimalField(max_digits=19, decimal_places=2)
-        activo=models.BooleanField(default=True)
-        produccion=models.ManyToManyField(Produccion,through='Intermediario_Produccion',blank=True)
-        fk_lugar=models.ForeignKey(Lugar,on_delete=models.RESTRICT,related_name='lugarlist') """
     def __str__(self) :
         return self.lugar
         
@@ -79,3 +70,36 @@ class Intermediario_Produccion(models.Model):
     activo=models.BooleanField(default=True)
     def __str__(self) :
         return str(self.year_compra)+" "+str(self.cantidad_comprada)
+
+
+class Costo_Produccion(models.Model):
+    year =models.PositiveIntegerField(max_length=4,unique=True)
+    costo_total=models.DecimalField(max_digits=19, decimal_places=2)
+    activo=models.BooleanField(default=True)
+    ##cosecha
+    recolectado=models.DecimalField(max_digits=19, decimal_places=2)
+    amontonado=models.DecimalField(max_digits=19, decimal_places=2)
+    desgranado=models.DecimalField(max_digits=19, decimal_places=2)
+    alquiler_desgranadora=models.DecimalField(max_digits=19, decimal_places=2)
+    ensacado_almacenamiento=models.DecimalField(max_digits=19, decimal_places=2)
+    control_tratamiento_maiz=models.DecimalField(max_digits=19, decimal_places=2)
+    venta=models.DecimalField(max_digits=19, decimal_places=2)
+    ##labores culturales
+    primera_fertilizacion=models.DecimalField(max_digits=19, decimal_places=2)
+    primer_control_plagas=models.DecimalField(max_digits=19, decimal_places=2)
+    primer_control_enfermedades=models.DecimalField(max_digits=19, decimal_places=2)
+    aplicacion_hebricida=models.DecimalField(max_digits=19, decimal_places=2)
+    segunda_fertilizacion=models.DecimalField(max_digits=19, decimal_places=2)
+    segundo_control_plagas=models.DecimalField(max_digits=19, decimal_places=2)
+    segundo_control_enfermedades=models.DecimalField(max_digits=19, decimal_places=2)
+    tercera_fertilizacion=models.DecimalField(max_digits=19, decimal_places=2)
+    tiempo_espera=models.DecimalField(max_digits=19, decimal_places=2)
+    ##siembra
+    desbroce_monte=models.DecimalField(max_digits=19, decimal_places=2)
+    quema_maleza=models.DecimalField(max_digits=19, decimal_places=2)
+    seleccion_semilla=models.DecimalField(max_digits=19, decimal_places=2)
+    aplicacion_herbicida=models.DecimalField(max_digits=19, decimal_places=2)
+    desinfeccion_semilla=models.DecimalField(max_digits=19, decimal_places=2)
+    siembra=models.DecimalField(max_digits=19, decimal_places=2)
+    def __str__(self) :
+        return str(self.desbroceMonte)+" "+str(self.quemaMaleza)

@@ -1,4 +1,5 @@
 from django.urls import path
+from app.api.CostoProduccion.views import CostoPrduccionAV, CostoProduccionDetalleAV
 from app.api.Intermediario.views import IntermediarioAV, IntermediarioDetalleAV
 from app.api.Intermediario_Produccion.views import  IntermediarioProduccionDetalleAV, IntermediarioProduccionAV
 from app.api.Parroquia.views import ParroquiaAV, ParroquiaDetalleAV
@@ -9,6 +10,10 @@ from app.api.TipoProductor.views import TipoProductoresAV
 #from app.views import ListarCantones
 #agregar una coleccionde urls
 urlpatterns = [
+      
+   path('costo-produccion/',CostoPrduccionAV.as_view(),name='listar-costo-produccion'), 
+   path('costo-produccion/<int:pk>',CostoProduccionDetalleAV.as_view(),name='detalle-costo-produccion'),
+
    path('cantones/',CantonAV.as_view(),name='listar-cantones'), 
    path('cantones/<int:pk>',CantonDetalleAV.as_view(),name='detalle-cantones'),
 
