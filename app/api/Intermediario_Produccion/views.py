@@ -115,10 +115,10 @@ class IntermediarioProduccionDetalleAV(APIView):
     def delete(self, request, pk):
         try:
             intermediarioProduccion = Intermediario_Produccion.objects.get(pk=pk)
+            intermediarioProduccion.delete()
+            return Response({'data':[],'success':True,'message':'Registro eliminado'},status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
             return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
-        intermediarioProduccion.delete()
-        return Response({'data':[],'success':True,'message':'Registro eliminado'},status=status.HTTP_204_NO_CONTENT)
 
 
 

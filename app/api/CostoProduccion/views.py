@@ -66,10 +66,10 @@ class CostoProduccionDetalleAV(APIView):
     def delete(self, request, pk):
         try:
             costo_produccion = Costo_Produccion.objects.get(pk=pk)
+            #canton.delete()
+            return Response({'data':[],'success':True,'message':'Solicitud exitosa, pero no se puede eliminar el registro por cuestion de reglas de negocio'},status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
             return Response({'data':[],'success':False,'message':str(e)},status=status.HTTP_404_NOT_FOUND)
-        #canton.delete()
-        return Response({'data':[],'success':True,'message':'Solicitud exitosa, pero no se puede eliminar el registro por cuestion de reglas de negocio'},status=status.HTTP_204_NO_CONTENT)
 
 """ @api_view()
 def listarCantones(request):

@@ -64,8 +64,8 @@ class IntermediarioDetalleAV(APIView):
     def delete(self, request, pk):
         try:
             intermediario = Intermediario.objects.get(pk=pk)
+            intermediario.delete()
+            return Response({'data':[],'success':True,'message':'Registro eliminado'},status=status.HTTP_204_NO_CONTENT) 
         except Exception as e:
             return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
-        intermediario.delete()
-        return Response({'data':[],'success':True,'message':'Registro eliminado'},status=status.HTTP_204_NO_CONTENT) 
 

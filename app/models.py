@@ -76,6 +76,7 @@ class Costo_Produccion(models.Model):
     year =models.PositiveIntegerField(max_length=4,unique=True)
     costo_total=models.DecimalField(max_digits=19, decimal_places=2)
     activo=models.BooleanField(default=True)
+
     ##cosecha
     recolectado=models.DecimalField(max_digits=19, decimal_places=2)
     amontonado=models.DecimalField(max_digits=19, decimal_places=2)
@@ -84,6 +85,8 @@ class Costo_Produccion(models.Model):
     ensacado_almacenamiento=models.DecimalField(max_digits=19, decimal_places=2)
     control_tratamiento_maiz=models.DecimalField(max_digits=19, decimal_places=2)
     venta=models.DecimalField(max_digits=19, decimal_places=2)
+    cosecha_total=models.DecimalField(max_digits=19, decimal_places=2)
+
     ##labores culturales
     primera_fertilizacion=models.DecimalField(max_digits=19, decimal_places=2)
     primer_control_plagas=models.DecimalField(max_digits=19, decimal_places=2)
@@ -94,6 +97,8 @@ class Costo_Produccion(models.Model):
     segundo_control_enfermedades=models.DecimalField(max_digits=19, decimal_places=2)
     tercera_fertilizacion=models.DecimalField(max_digits=19, decimal_places=2)
     tiempo_espera=models.DecimalField(max_digits=19, decimal_places=2)
+    labores_culturales_total=models.DecimalField(max_digits=19, decimal_places=2)
+   
     ##siembra
     desbroce_monte=models.DecimalField(max_digits=19, decimal_places=2)
     quema_maleza=models.DecimalField(max_digits=19, decimal_places=2)
@@ -101,5 +106,7 @@ class Costo_Produccion(models.Model):
     aplicacion_herbicida=models.DecimalField(max_digits=19, decimal_places=2)
     desinfeccion_semilla=models.DecimalField(max_digits=19, decimal_places=2)
     siembra=models.DecimalField(max_digits=19, decimal_places=2)
+    siembra_total=models.DecimalField(max_digits=19, decimal_places=2)
+    
     def __str__(self) :
         return str(self.desbroceMonte)+" "+str(self.quemaMaleza)
