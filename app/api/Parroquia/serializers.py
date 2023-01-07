@@ -25,7 +25,7 @@ class ParroquiaSerializer(serializers.ModelSerializer):
 
     def update(self,instancia,validated_data):
         instancia.nombre=validated_data.get('nombre',instancia.nombre)
-        instancia.fk_canton=validated_data.get('fk_canton',instancia.fk_canton)
+        instancia.fk_canton=validated_data.get('fk_canton_id',instancia.fk_canton)
         instancia.activo=validated_data.get('activo',instancia.activo)
         instancia.save()
         return instancia 
