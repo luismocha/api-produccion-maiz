@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from user_app.api.serializers import    RegistrationSerializer, UserSerializer
 from django.contrib.auth import authenticate,logout
 
+
 ### INCIAR SESION #####
 @api_view(['POST'])
 def login_view(request):

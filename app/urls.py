@@ -6,11 +6,17 @@ from app.api.Parroquia.views import ParroquiaAV, ParroquiaDetalleAV
 from app.api.Produccion.view import ProduccionAV, ProduccionDetalleAV
 from app.api.Productor.views import ProductorAV, ProductorDetalleAV
 from app.api.Canton.views import CantonDetalleAV,CantonAV
+from app.api.Query.views import queryTotal
+from app.api.Resultado.views import ResultadoAV, ResultadoDetalleAV
 from app.api.TipoProductor.views import TipoProductoresAV
 #from app.views import ListarCantones
 #agregar una coleccionde urls
 urlpatterns = [
-      
+   path('query-total/',queryTotal,name='query-listado'), 
+
+   path('resultados/',ResultadoAV.as_view(),name='listar-resultados'), 
+   path('resultados/<int:pk>',ResultadoDetalleAV.as_view(),name='detalle-resultados'),
+
    path('costo-produccion/',CostoPrduccionAV.as_view(),name='listar-costo-produccion'), 
    path('costo-produccion/<int:pk>',CostoProduccionDetalleAV.as_view(),name='detalle-costo-produccion'),
 

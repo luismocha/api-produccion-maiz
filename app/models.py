@@ -110,3 +110,10 @@ class Costo_Produccion(models.Model):
     
     def __str__(self) :
         return str(self.desbroceMonte)+" "+str(self.quemaMaleza)
+
+class Resultado(models.Model):
+    year =models.PositiveIntegerField(max_length=4,unique=True)
+    costo_total_produccion=models.DecimalField(max_digits=19, decimal_places=2)
+    rentabilidad=models.DecimalField(max_digits=19, decimal_places=2)
+    def __str__(self) :
+        return str(self.year)+" "+str(self.costo_total_produccion)+" "+str(self.rentabilidad)

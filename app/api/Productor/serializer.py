@@ -46,13 +46,14 @@ class ProductorSerializer(serializers.ModelSerializer):
         }
         return Productor.objects.create(**data)
 
-"""     def update(self,instancia,validated_data):
+    def update(self,instancia,validated_data):
         instancia.nombre=validated_data.get('nombre',instancia.nombre)
         instancia.apellido=validated_data.get('apellido',instancia.apellido)
         instancia.cedula=validated_data.get('cedula',instancia.cedula)
         instancia.celular=validated_data.get('celular',instancia.celular)
-        instancia.fk_canton=validated_data.get('fk_canton',instancia.fk_canton)
+        instancia.fk_canton=validated_data.get('fk_canton_id',instancia.fk_canton)
         instancia.activo=validated_data.get('activo',instancia.activo)
-        instancia.fk_parroquia=validated_data.get('fk_parroquia',instancia.fk_parroquia)
-        instance = super().update(instancia, validated_data)
-        return instance  """
+        instancia.fk_parroquia=validated_data.get('fk_parroquia_id',instancia.fk_parroquia)
+        #instance = super().update(instancia, validated_data)
+        instancia.save()
+        return instancia  
