@@ -26,14 +26,14 @@ def queryTotal(request):
             totalToneladas=Produccion.objects.filter(year=yearCadena).aggregate(Avg('toneladas'))
             numeroHectarias=Produccion.objects.filter(year=yearCadena).count()
             data={
-                'costoTotalProduccion':[{
+                'costoTotalProduccion':{
                     'numeroHectarias':numeroHectarias,
                     'costoTotalProduccionPorHectaria':totalHectarias['hectareas__avg'],
-                }],
-                'rentabilidad':[{
+                },
+                'rentabilidad':{
                     'precioVentaAlMercado':totalPrecioVenta['precio_venta__avg']//totalToneladas['toneladas__avg'],
                     'rendimientoCultivo': totalToneladas['toneladas__avg']//totalHectarias['hectareas__avg']
-                }]
+                }
             }
             return Response({'data':data,'success':True,'message':'Ok'},status=status.HTTP_200_OK)
         return Response({'data':serializer.errors,'success':False,'message':'El formato del año no es el correcto'},status=status.HTTP_404_NOT_FOUND)
