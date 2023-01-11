@@ -20,6 +20,10 @@ def queryTotal(request):
             #****** HACEMOS LAS CONSULTAS TODO OK ******
             #1. sumar todas las hectarias de la tabla produccion y sacar un promedio
             #import pdb; pdb.set_trace()
+            ## validar si existe produccion de ese año
+            existeProduccion=Produccion.objects.filter(year=yearCadena).first()
+            if not existeProduccion:
+                return Response({'data':[],'success':False,'message':'No existe producción disponible para el año '+yearCadena},status=status.HTTP_404_NOT_FOUND)
             totalHectarias=Produccion.objects.filter(year=yearCadena).aggregate(Avg('hectareas'))
             totalPrecioVenta=Produccion.objects.filter(year=yearCadena).aggregate(Avg('precio_venta'))
             #totalQuintales=Produccion.objects.filter(year=yearCadena).aggregate(Avg('quintales'))
