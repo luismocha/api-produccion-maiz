@@ -66,10 +66,10 @@ class CantonDetalleAV(APIView):
     def delete(self, request, pk):
         try:
             canton = Canton.objects.get(pk=pk)
+            canton.delete()
+            return Response({'data':[],'success':True,'message':'Registro eliminado'},status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
             return Response({'data':[],'success':False,'message':str(e)},status=status.HTTP_404_NOT_FOUND)
-        canton.delete()
-        return Response({'data':[],'success':True,'message':'Registro eliminado'},status=status.HTTP_204_NO_CONTENT)
 
 """ @api_view()
 def listarCantones(request):
