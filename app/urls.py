@@ -1,5 +1,6 @@
 from django.urls import path
 from app.api.CostoProduccion.views import CostoPrduccionAV, CostoProduccionDetalleAV
+from app.api.Galeria.views import GaleriaAV, GaleriaDetalleAV
 from app.api.Intermediario.views import IntermediarioAV, IntermediarioDetalleAV
 from app.api.Intermediario_Produccion.views import  IntermediarioProduccionDetalleAV, IntermediarioProduccionAV
 from app.api.Parroquia.views import ParroquiaAV, ParroquiaDetalleAV
@@ -37,6 +38,9 @@ urlpatterns = [
 
    path('intermediarios-producciones/',IntermediarioProduccionAV.as_view(),name='listar-intermediarios-produccion'),    
    path('intermediarios-producciones/<int:pk>',IntermediarioProduccionDetalleAV.as_view(),name='detalle-intermediarios-produccion'),
+   
+   path('galeria/',GaleriaAV.as_view(),name='listar-galerias'),    
+   path('galeria/<int:pk>',GaleriaDetalleAV.as_view(),name='detalle-galeria-produccion'),
 
    path('tipos-productores/',TipoProductoresAV.as_view(),name='tipos-productores'),   
 ]

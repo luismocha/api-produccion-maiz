@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 
 from user_app.api.serializers import    RegistrationSerializer, UserSerializer
 from django.contrib.auth import authenticate,logout
-
+from django.core.mail import send_mail
 
 ### INCIAR SESION #####
 @api_view(['POST'])
@@ -140,4 +140,24 @@ def registration_view(request):
             #return Response(data)
     except Exception as e:
         return Response({'error':'ERROR','message':str(e)}, status=status.HTTP_400_BAD_REQUEST)
-      
+
+@api_view(['POST'])
+def recuperarContraseña(request):
+    try:
+        data={}
+        send_mail(
+            'Subject here',
+            'Here is the message.',
+            'test_produccion_maiz@example.com',
+            ['jhonnymichaeldj2011@hotmail.com'],
+            fail_silently=False,
+        )
+        #import pdb; pdb.set_trace()
+        #recuperamos las credenciales y autenticamos al usuarios
+        usuarioName=request.data.get('username',None)
+        password=request.data.get('password',None)
+        userAuth=authenticate(username=usuarioName, password=password)
+        ## si es correcto añadirmos a la reques la ifnroamcion de sesion
+        return Response({'data':data,'success':True,'message':'Se eniado su nueva contrasña a su correo'},status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
