@@ -120,7 +120,14 @@ class Resultado(models.Model):
 
 class Galeria(models.Model):
     nombre =models.CharField(max_length=100)
-    imagen=models.ImageField()
+    imagen=models.FileField(upload_to='galeria/')
+    descripcion=models.CharField(max_length=200)
+    def __str__(self) :
+        return str(self.nombre)+" "+str(self.descripcion)
+    
+class Publicaciones(models.Model):
+    nombre =models.CharField(max_length=100)
+    archivo=models.FileField(upload_to='pdfs/')
     descripcion=models.CharField(max_length=200)
     def __str__(self) :
         return str(self.nombre)+" "+str(self.descripcion)

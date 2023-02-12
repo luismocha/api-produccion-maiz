@@ -156,5 +156,5 @@ REST_FRAMEWORK = {
 }
 
 ## direccitorio para subir archivos galeria
-MEDIA_URL = '/geleria-imagenes/'  
-MEDIA_ROOT = os.path.join(BASE_DIR, 'geleria-imagenes/')  
+MEDIA_URL = '/archivos-proyecto/'  
+MEDIA_ROOT = os.path.join(BASE_DIR, 'archivos-proyecto/')  
