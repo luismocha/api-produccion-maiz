@@ -1,5 +1,6 @@
 from django.urls import path
 from app.api.CostoProduccion.views import CostoPrduccionAV, CostoProduccionDetalleAV
+from app.api.Estadistico.views import  estadisticoProductores
 from app.api.Galeria.views import GaleriaAV, GaleriaDetalleAV
 from app.api.Intermediario.views import IntermediarioAV, IntermediarioDetalleAV
 from app.api.Intermediario_Produccion.views import  IntermediarioProduccionDetalleAV, IntermediarioProduccionAV
@@ -14,6 +15,8 @@ from app.api.TipoProductor.views import TipoProductoresAV
 #agregar una coleccionde urls
 urlpatterns = [
    path('query-total/',queryTotal,name='query-listado'), 
+   
+   path('estadisticos/',estadisticoProductores,name='estadistico-listado'), 
 
    path('resultados/',ResultadoAV.as_view(),name='listar-resultados'), 
    path('resultados/<int:pk>',ResultadoDetalleAV.as_view(),name='detalle-resultados'),

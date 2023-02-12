@@ -41,7 +41,7 @@ class GaleriaDetalleAV(APIView):
         try:
             resultado = Galeria.objects.get(pk=pk)
             serializer = GaleriaSerializer(resultado)
-            return Response({'data':serializer.data,'success':True,'message':'Resultado encontrado'},status=status.HTTP_200_OK)
+            return Response({'data':serializer.data,'success':True,'message':'Galeria no encontrada'},status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'data':[],'success':False,'message':'ERROR '+str(e)},status=status.HTTP_404_NOT_FOUND)
     #actulizar
@@ -49,16 +49,16 @@ class GaleriaDetalleAV(APIView):
         try:
             galeria = Galeria.objects.get(pk=pk)
         except Galeria.DoesNotExist:
-            return Response({'data':[],'success':False,'message':'Resultado no encontrado'},status=status.HTTP_404_NOT_FOUND)
+            return Response({'data':[],'success':False,'message':'Galeria no encontrado'},status=status.HTTP_404_NOT_FOUND)
 
         ### TODO OK
         try:
             serializer=GaleriaSerializer(galeria,data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response({'data':serializer.data,'success':True,'message':'Resultado actualizado exitosamente'},status=status.HTTP_200_OK)
+                return Response({'data':serializer.data,'success':True,'message':'Galeria actualizado exitosamente'},status=status.HTTP_200_OK)
             else:
-                return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar el resultado'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar la galeria'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'data':serializer.errors,'success':False,'message':"ERROR "+str(e)}, status=status.HTTP_400_BAD_REQUEST)
     def delete(self, request, pk):
