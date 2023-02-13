@@ -8,7 +8,7 @@ from app.api.Parroquia.views import ParroquiaAV, ParroquiaDetalleAV
 from app.api.Produccion.view import ProduccionAV, ProduccionDetalleAV
 from app.api.Productor.views import ProductorAV, ProductorDetalleAV
 from app.api.Canton.views import CantonDetalleAV,CantonAV
-from app.api.Publicaciones.views import PublicacionesAV
+from app.api.Publicaciones.views import PublicacionesAV, PublicacionesDetalleAV
 from app.api.Query.views import queryTotal
 from app.api.Resultado.views import ResultadoAV, ResultadoDetalleAV
 from app.api.TipoProductor.views import TipoProductoresAV
@@ -48,7 +48,7 @@ urlpatterns = [
    
    
    path('publicaciones/',PublicacionesAV.as_view(),name='listar-publicaciones'),    
-   #"#path('publicaciones/<int:pk>',GaleriaDetalleAV.as_view(),name='detalle-publicaciones'),
+   path('publicaciones/<int:pk>',PublicacionesDetalleAV.as_view(),name='detalle-publicaciones'),
 
    path('tipos-productores/',TipoProductoresAV.as_view(),name='tipos-productores'),   
 ]

@@ -12,7 +12,7 @@ class PublicacionesSerializer(serializers.ModelSerializer):
     def update(self,instancia,validated_data):
         if(instancia.archivo):
             instancia.nombre=validated_data.get('nombre',instancia.nombre)
-            instancia.archivo=validated_data.get('archivo',instancia.imagen)
+            instancia.archivo=validated_data.get('archivo',instancia.archivo)
             instancia.descripcion=validated_data.get('descripcion',instancia.descripcion)
             instancia.save()
             return instancia
