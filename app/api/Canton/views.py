@@ -1,7 +1,8 @@
 from urllib import response
 from app.api.Canton.serializers import CantonSerializer
-from app.models import Canton
+from app.models import Canton,Parroquia
 from rest_framework.decorators import api_view
+from app.api.Parroquia.serializers import ParroquiaSerializer
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
@@ -65,6 +66,7 @@ class CantonDetalleAV(APIView):
             return Response({'data':serializer.errors,'success':False,'message':"ERROR "+str(e)}, status=status.HTTP_400_BAD_REQUEST)
     def delete(self, request, pk):
         try:
+            #revisamos si esta ocupad
             canton = Canton.objects.get(pk=pk)
             canton.delete()
             return Response({'data':[],'success':True,'message':'Registro eliminado'},status=status.HTTP_204_NO_CONTENT)

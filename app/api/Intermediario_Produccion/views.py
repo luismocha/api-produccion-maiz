@@ -19,7 +19,6 @@ class IntermediarioProduccionAV(APIView):
     def post(self, request):
 
         try:
-            #import pdb; pdb.set_trace()
             ### ******** validar que esta produccion exista ********** ##
             produccion=Produccion.objects.filter(pk=request.data['fk_produccion_id']).first()
             if not produccion:
@@ -27,7 +26,8 @@ class IntermediarioProduccionAV(APIView):
             
             ##******* validar que exista stock ************* ####
             existeStock=False
-            if produccion.stock>=request.data['cantidad_comprada']:
+            cantidadComprar=int(request.data['cantidad_comprada'])
+            if produccion.stock>=cantidadComprar:
                 existeStock=True
             if not existeStock:
                 return Response({'data':[],'success':False,'message':"No existe stock suficiente en la producción, el stock actual es de "+str(produccion.stock)},status=status.HTTP_404_NOT_FOUND)
@@ -56,7 +56,7 @@ class IntermediarioProduccionAV(APIView):
             
             ##**********  ACTUALIZAR EL STOCK DE LA PRODUCCION **************###
             #import pdb; pdb.set_trace()
-            produccion.stock=produccion.stock-request.data['cantidad_comprada']
+            produccion.stock=produccion.stock-int(request.data['cantidad_comprada'])
             produccion.save()
             return Response({'data':serializerIntermediarioProduccion.data,'success':True,'message':'Intermediario Producción creado exitosamente'},status=status.HTTP_201_CREATED)
         except Exception as e:

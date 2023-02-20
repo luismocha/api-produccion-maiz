@@ -58,7 +58,7 @@ class ProduccionDetalleAV(APIView):
                 #actualizo el stock
                 produccion.stock=request.data['quintales']
                 produccion.save()
-                return Response({'data':serializer.data,'success':True,'message':'Producción actualizada exitosamente, el año y el productor no se pueden actulizar'},status=status.HTTP_200_OK)
+                return Response({'data':serializer.data,'success':True,'message':'Producción actualizada exitosamente'},status=status.HTTP_200_OK)
             else:
                 return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar la producción'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
