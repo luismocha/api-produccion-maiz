@@ -84,13 +84,16 @@ class IntermediarioProduccionDetalleAV(APIView):
             produccion=Produccion.objects.filter(pk=request.data['fk_produccion_id']).first()
             if not produccion:
                 return Response({'data':[],'success':False,'message':"Produccion no encontrada "},status=status.HTTP_404_NOT_FOUND)
-            
+            ##REGRESAR EL PRODUCTO AL STOCK##
+            compradoAnterior=intermediarioProduccion.cantidad_comprada
+            stock=produccion.stock
+            totalEstimadoStock=compradoAnterior+stock
             ##******* validar que exista stock ************* ####
             existeStock=False
-            if produccion.stock>=request.data['cantidad_comprada']:
+            if totalEstimadoStock>=int(request.data['cantidad_comprada']):
                 existeStock=True
             if not existeStock:
-                return Response({'data':[],'success':False,'message':"No existe stock suficiente en la producción, el stock actual es de "+str(produccion.stock)},status=status.HTTP_404_NOT_FOUND)
+                return Response({'data':[],'success':False,'message':"No existe stock suficiente en la producción, el stock actual es de "+str(totalEstimadoStock)},status=status.HTTP_404_NOT_FOUND)
             
             ## ********* EL AÑO DE COMPRA DEBE SER IGUAL AL AÑO DE PRODUCCION *********##
             yerCompraIsIgualproduccionYear =False
@@ -107,6 +110,8 @@ class IntermediarioProduccionDetalleAV(APIView):
             serializer=IntermediarioProduccionSerializer(intermediarioProduccion,data=request.data)
             if serializer.is_valid():
                 serializer.save()
+                ##actulizar el stock
+                produccion.stock=totalEstimadoStock-int(request.data['cantidad_comprada'])
                 return Response({'data':serializer.data,'success':True,'message':'Intermediario Producción actualizado exitosamente'},status=status.HTTP_200_OK)
             else:
                 return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar el Intermediario Producción'}, status=status.HTTP_400_BAD_REQUEST)
