@@ -1,5 +1,3 @@
-from urllib import response
-from app.api.Intermediario.serializers import IntermediarioSerializer
 from app.api.Intermediario_Produccion.serializers import IntermediarioProduccionSerializer
 from app.models import  Intermediario, Intermediario_Produccion, Produccion
 from rest_framework.views import APIView
@@ -112,6 +110,7 @@ class IntermediarioProduccionDetalleAV(APIView):
                 serializer.save()
                 ##actulizar el stock
                 produccion.stock=totalEstimadoStock-int(request.data['cantidad_comprada'])
+                produccion.save()
                 return Response({'data':serializer.data,'success':True,'message':'Intermediario Producción actualizado exitosamente'},status=status.HTTP_200_OK)
             else:
                 return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar el Intermediario Producción'}, status=status.HTTP_400_BAD_REQUEST)
