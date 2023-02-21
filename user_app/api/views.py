@@ -109,8 +109,6 @@ def logout_view(request):
 @permission_classes([AdminOrReadOnly])
 def registration_view(request):
     try:
-        print(" ** REGISTRAR USUARIO ***+")
-        print(request.data)
         if request.method == 'POST':
             ##valir que el usuarioname sera unico
             User = get_user_model()
@@ -125,8 +123,6 @@ def registration_view(request):
             data={}
             if serializer.is_valid():
                 account=serializer.save()
-                print("USUARIO")
-                print(account)
                 data['response']='El registro del usuario fue exitoso'
                 data['username']=account.username
                 data['email']=account.email
@@ -139,7 +135,7 @@ def registration_view(request):
                 return Response({'data':data,'success':False,'message':"No se puede crear el usuario "}, status=status.HTTP_400_BAD_REQUEST)
             #return Response(data)
     except Exception as e:
-        return Response({'error':'ERROR','message':str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'data':[],'success':False,'message':"ERROR "+str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def recuperarContraseña(request):

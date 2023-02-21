@@ -12,6 +12,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
         extra_kwargs={'password': {'write_only':True}}
     def save(self):
         password = self.validated_data['password']
+        password2 = self.validated_data['password2']
+        ##validar password
+        if password != password2:
+            raise serializers.ValidationError(' El password de confirmación no coinciden')
         account = User(email=self.validated_data['email'],username=self.validated_data['username'])
         account.set_password(password)
         account.is_staff=self.validated_data['is_staff']
