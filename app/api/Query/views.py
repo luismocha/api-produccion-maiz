@@ -35,8 +35,8 @@ def queryTotal(request):
                     'costoTotalProduccionPorHectaria':totalHectarias['hectareas__avg'],
                 },
                 'rentabilidad':{
-                    'precioVentaAlMercado':totalPrecioVenta['precio_venta__avg']//totalToneladas['toneladas__avg'],
-                    'rendimientoCultivo': totalToneladas['toneladas__avg']//totalHectarias['hectareas__avg']
+                    'precioVentaAlMercado':totalPrecioVenta['precio_venta__avg']/totalToneladas['toneladas__avg'],
+                    'rendimientoCultivo': totalToneladas['toneladas__avg']/totalHectarias['hectareas__avg']
                 }
             }
             return Response({'data':data,'success':True,'message':'Ok'},status=status.HTTP_200_OK)
