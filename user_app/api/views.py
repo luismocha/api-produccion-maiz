@@ -1,17 +1,17 @@
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
-#from user_app.api.serializers import UserSerializer, UserSerializer
-from rest_framework import serializers
-from app.api.permissions import AdminAuthPutOrReadOnly, AdminOrReadOnly, AuthPermisos
-from user_app import models
+from app.api.permissions import AdminAuthPutOrReadOnly, AdminOrReadOnly
 from rest_framework.authtoken.models import Token
 from rest_framework import status
+import string
+import secrets
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 
-from user_app.api.serializers import    RegistrationSerializer, UserSerializer
-from django.contrib.auth import authenticate,logout
+from user_app.api.serializers import    UserSerializer
+from django.contrib.auth import authenticate
 from django.core.mail import send_mail
+from proyecto.settings import EMAIL_HOST
 
 ### INCIAR SESION #####
 @api_view(['POST'])
@@ -56,14 +56,12 @@ def usuario_id_view(request,pk):
         
         if request.method=='PUT':
             ## para q no se cree dos veces el mismo objeto
-            serializer =UserSerializer(
-                data=request.data, instance=user, context={'request': request}
-                )
-            if serializer.is_valid():
-                serializer.save()
-                return Response({'data':serializer.data,'success':True,'message':'Usuario actualizado exitosamente'},status=status.HTTP_200_OK)
+            serializerActualizar =UserSerializer(user,data=request.data)
+            if serializerActualizar.is_valid():
+                serializerActualizar.update(user,request.data)
+                return Response({'data':serializerActualizar.data,'success':True,'message':'Usuario actualizado exitosamente'},status=status.HTTP_200_OK)
             else:
-               return Response({'data':serializer.errors,'success':False,'message':'No se puede actulizar el usuario'}, status=status.HTTP_400_BAD_REQUEST)
+               return Response({'data':serializerActualizar.errors,'success':False,'message':'No se puede actulizar el usuario'}, status=status.HTTP_400_BAD_REQUEST)
 
         if request.method=='DELETE':
             serializer = UserSerializer(user)
@@ -76,15 +74,12 @@ def usuario_id_view(request,pk):
 @api_view(['GET'])
 @permission_classes([AdminAuthPutOrReadOnly])
 def listar_usuarios_view(request):
-    print("**  LISTAR TODO LOS USUARIOS *****")
-    print(request)
     try:
         print(request.user)
         if request.method == 'GET':
             User = get_user_model()
             users = User.objects.all()
             serializer =UserSerializer(users,many=True)
-            print(serializer.data)
             return Response({'data':serializer.data,'success':True,'message':'Listado de todos los usuarios'},status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_400_BAD_REQUEST)
@@ -92,8 +87,6 @@ def listar_usuarios_view(request):
 ## CERRAR  SESION ######
 @api_view(['POST'])
 def logout_view(request):
-    print("**  CERRAR SESION USER *****")
-    print(request)
     try:
         if request.method == 'POST':
             #logout(request)
@@ -119,7 +112,7 @@ def registration_view(request):
             if  users_email:
                 return Response({'data':[],'success':False,'message':'Ya existe un usurio con el correo de '+request.data['email']},status=status.HTTP_404_NOT_FOUND)
             ## TODO OKKKK
-            serializer=RegistrationSerializer(data=request.data)
+            serializer=UserSerializer(data=request.data)
             data={}
             if serializer.is_valid():
                 account=serializer.save()
@@ -140,20 +133,30 @@ def registration_view(request):
 @api_view(['POST'])
 def recuperarContraseña(request):
     try:
+        email=request.data["email"]
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return Response({'data':[],'success':False,'message':"El usuario con el correo "+str(email)+" no existe "},status=status.HTTP_404_NOT_FOUND)
+    try:
         data={}
-        send_mail(
-            'Subject here',
-            'Here is the message.',
-            'test_produccion_maiz@example.com',
-            ['jhonnymichaeldj2011@hotmail.com'],
+        ##enviar correo
+        passwordRANDON=''
+        pwd_length = 12
+        letters = string.ascii_letters
+        digits = string.digits
+        special_chars = string.punctuation
+        alphabet = letters + digits + special_chars
+        for i in range(pwd_length):
+            passwordRANDON += ''.join(secrets.choice(alphabet))
+        user.set_password(passwordRANDON)
+        user.save()
+        emailEnviado=send_mail(
+            'Hola '+str(user.username)+' esta es su nueva  contraseña generado para su inicio de session ',
+            'Su nueva contraseña generado para su inicio de session es : '+passwordRANDON,
+            EMAIL_HOST,
+            [user.email],
             fail_silently=False,
-        )
-        #import pdb; pdb.set_trace()
-        #recuperamos las credenciales y autenticamos al usuarios
-        usuarioName=request.data.get('username',None)
-        password=request.data.get('password',None)
-        userAuth=authenticate(username=usuarioName, password=password)
-        ## si es correcto añadirmos a la reques la ifnroamcion de sesion
-        return Response({'data':data,'success':True,'message':'Se eniado su nueva contrasña a su correo'},status=status.HTTP_200_OK)
+            )
+        return Response({'data':emailEnviado,'success':True,'message':'Se envio nueva contraseña a su correo'},status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)

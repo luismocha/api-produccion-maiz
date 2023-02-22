@@ -158,3 +158,11 @@ REST_FRAMEWORK = {
 ## direccitorio para subir archivos galeria
 MEDIA_URL = '/archivos-proyecto/'  
 MEDIA_ROOT = os.path.join(BASE_DIR, 'archivos-proyecto/')  
+
+# Configuración de correo electrónico
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.googlemail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'proyecto.pmdl@gmail.com' # reemplaza con tu cuenta de correo
+EMAIL_HOST_PASSWORD = 'jgtiwtwqahjylejt' # reemplaza con tu contraseña

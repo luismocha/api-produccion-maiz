@@ -8,6 +8,6 @@ urlpatterns = [
     path('logout/',logout_view,name='logout'),
     path('users/',listar_usuarios_view,name='usuarios'),
     path('users/<int:pk>',usuario_id_view,name='usuario-id'), 
-    path('password-recover-email/',recuperarContraseña,name='recuperar-contraseña'), 
+    path('password-recover/',recuperarContraseña,name='recuperar-contraseña'), 
     #path('users/<int:pk>',usuarios_update_id_view,name='actualizar-usuario-id'), 
 ]

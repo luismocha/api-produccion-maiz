@@ -12,7 +12,6 @@ from app.api.permissions import AdminOrReadOnly
 class CantonAV(APIView):
     ## SOLO PUEDE VISUALIZAR CUALQUIER PERSONA
     permission_classes =[AdminOrReadOnly]
-
     def get(self, request):
         try:
             cantons = Canton.objects.filter(activo=True)
