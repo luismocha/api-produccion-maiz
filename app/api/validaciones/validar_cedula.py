@@ -1,36 +1,24 @@
-def vcedula(texto):
+def vcedula(cedula):
     # sin ceros a la izquierda
-    nocero = texto.strip("0")
-    
-    cedula = int(nocero,0)
-    verificador = cedula%10
-    numero = cedula//10
-    
-    # mientras tenga números
-    suma = 0
-    while (numero > 0):
-        
-        # posición impar
-        posimpar = numero%10
-        numero   = numero//10
-        posimpar = 2*posimpar
-        if (posimpar  > 9):
-            posimpar = posimpar-9
-        
-        # posición par
-        pospar = numero%10
-        numero = numero//10
-        
-        suma = suma + posimpar + pospar
-    
-    decenasup = suma//10 + 1
-    calculado = decenasup*10 - suma
-    if (calculado  >= 10):
-        calculado = calculado - 10
+    if len(cedula) != 10:
+        return False
+    if not cedula.isdigit():
+        return False
+    if int(cedula[0:2]) < 1 or int(cedula[0:2]) > 24:
+        return False
 
-    if (calculado == verificador):
-        validado = 1
-    else:
-        validado = 0
-        
-    return (validado)
+    digito_verificador = int(cedula[9])
+    suma = 0
+    for i, digito in enumerate(cedula[0:9]):
+        digito = int(digito)
+        if i % 2 == 0:
+            digito *= 2
+            if digito > 9:
+                digito -= 9
+        suma += digito
+
+    total = 10 - (suma % 10)
+    if total == 10:
+        total = 0
+
+    return total == digito_verificador

@@ -18,8 +18,6 @@ class ProductorAV(APIView):
         except Exception as e:
             return Response({'data':[],'success':False,'message':"ERROR "+str(e)},status=status.HTTP_404_NOT_FOUND)
     def post(self, request):
-        print("RESQUES")
-        print(request.data)
         try:
             #validar productores con diferente cedula
             productor=Productor.objects.filter(cedula=request.data['cedula']).first()
