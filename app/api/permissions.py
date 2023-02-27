@@ -5,7 +5,7 @@ class AdminOrReadOnly(permissions.IsAdminUser):
         if request.method =='GET':
             return True 
         staff_permissio=bool(request.user and request.user.is_staff)
-        print(staff_permissio)
+        
         return staff_permissio
 class AdminAuthPutOrReadOnly(permissions.IsAdminUser):
      def has_permission(self, request, view):

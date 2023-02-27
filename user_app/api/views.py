@@ -65,6 +65,9 @@ def usuario_id_view(request,pk):
 
         if request.method=='DELETE':
             serializer = UserSerializer(user)
+            count = User.objects.all().count()
+            if (count==1):
+                return Response({'data':[],'success':False,'message':'No puede eliminar todos los usuaurios , por lo menos debe existir un usuario'},status=status.HTTP_404_NOT_FOUND)
             user.delete()
             return Response({'data':serializer.data,'success':True,'message':'Usuario elimiado exitosamente'},status=status.HTTP_200_OK)
     except Exception as e:
