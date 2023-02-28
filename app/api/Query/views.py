@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view,permission_classes
 from app.api.Query.serializers import ResultadoTablasAppSerializer
 from rest_framework import status
 from app.api.permissions import AdminAuthPutOrReadOnly, AdminOrReadOnly, AuthPermisos
-from app.models import Produccion
+from app.models import Costo_Produccion, Produccion
 ## obtener toda los resultados de las tablas
 @api_view(['POST'])
 @permission_classes([AdminAuthPutOrReadOnly])
@@ -28,11 +28,13 @@ def queryTotal(request):
             totalPrecioVenta=Produccion.objects.filter(year=yearCadena).aggregate(Avg('precio_venta'))
             #totalQuintales=Produccion.objects.filter(year=yearCadena).aggregate(Avg('quintales'))
             totalToneladas=Produccion.objects.filter(year=yearCadena).aggregate(Avg('toneladas'))
-            numeroHectarias=Produccion.objects.filter(year=yearCadena).count()
+            #numeroHectarias=Produccion.objects.filter(year=yearCadena).count()
+            costoProduccion=Costo_Produccion.objects.get(year=yearCadena)
+            #serializerCostoProduccion=CostoProduccionSerializer(costoProduccion,many=True)
             data={
                 'costoTotalProduccion':{
-                    'numeroHectarias':numeroHectarias,
-                    'costoTotalProduccionPorHectaria':totalHectarias['hectareas__avg'],
+                    'numeroHectarias':totalHectarias['hectareas__avg'],
+                    'costoTotalProduccionPorHectaria':costoProduccion.costo_total,
                 },
                 'rentabilidad':{
                     'precioVentaAlMercado':totalPrecioVenta['precio_venta__avg']/totalToneladas['toneladas__avg'],
