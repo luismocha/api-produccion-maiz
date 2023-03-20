@@ -58,6 +58,9 @@ def usuario_id_view(request,pk):
             ## para q no se cree dos veces el mismo objeto
             serializerActualizar =UserSerializer(user,data=request.data)
             if serializerActualizar.is_valid():
+                count = User.objects.all().count()
+                if (count==1 and request.data.get('is_staff')==False):
+                    return Response({'data':[],'success':False,'message':'No puede quitar los permisos al usuario, por lo menos debe existir un usuario'},status=status.HTTP_404_NOT_FOUND)
                 serializerActualizar.update(user,request.data)
                 return Response({'data':serializerActualizar.data,'success':True,'message':'Usuario actualizado exitosamente'},status=status.HTTP_200_OK)
             else:

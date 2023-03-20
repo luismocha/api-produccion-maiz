@@ -1,10 +1,17 @@
+import io
+import os
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from app.api.Publicaciones.serializers import PublicacionesSerializer
 from app.api.permissions import AdminOrReadOnly
 import uuid
+from rest_framework.decorators import api_view
 from app.models import Publicaciones
+from django.http import FileResponse
+from proyecto import settings
+
+from proyecto.settings import MEDIA_URL
 class PublicacionesAV(APIView):
     permission_classes =[AdminOrReadOnly]
     def get(self, request):
@@ -68,3 +75,22 @@ class PublicacionesDetalleAV(APIView):
             return Response({'data':[],'success':True,'message':'Registro eliminado'},status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'data':[],'success':False,'message':str(e)},status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def descargarPDF(request,pk):
+    if request.method == 'GET':
+        try:
+            publicacion:Publicaciones = Publicaciones.objects.get(pk=pk)
+        except Publicaciones.DoesNotExist:
+            return Response({'data':[],'success':False,'message':'Publicación no encontrado'},status=status.HTTP_404_NOT_FOUND)
+        try:
+            rutaDescarga = os.path.join(settings.MEDIA_ROOT, publicacion.archivo.name)
+            response=None
+            with open(rutaDescarga, 'rb') as pdf_file:
+                # Crea una respuesta HTTP con el archivo adjunto
+                response = FileResponse(io.BytesIO(pdf_file.read()))
+                response['Content-Disposition'] = 'attachment; filename='+publicacion.archivo.name
+            return response 
+            #return Response({'data':[],'success':True,'message':'Ok'},status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'data':[],'success':False,'message':"ERROR "+str(e)}, status=status.HTTP_400_BAD_REQUEST)
